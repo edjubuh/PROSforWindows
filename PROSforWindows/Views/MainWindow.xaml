@@ -1,0 +1,239 @@
+﻿<ma:MetroWindow x:Class="PROSforWindows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PROSforWindows"
+        xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:c="clr-namespace:PROSforWindows.Converters"
+        mc:Ignorable="d"
+        Height="400" MinWidth="400" Width="400" MaxWidth="600"
+        Title="PROS for Windows"
+        WindowStartupLocation="CenterScreen" 
+        BorderBrush="{Binding ToolPanelBrush}" WindowTitleBrush="{Binding ToolPanelBrush}" NonActiveBorderBrush="{Binding ToolPanelBrush}"  NonActiveWindowTitleBrush="{Binding ToolPanelBrush}"
+        BorderThickness="1.25px"
+        ResizeMode="CanResizeWithGrip"
+        WindowTransitionsEnabled="False">
+    <ma:MetroWindow.Resources>
+        <c:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <c:DirectoryStringConverter x:Key="DirectoryStringConverter" />
+        <c:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    </ma:MetroWindow.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Activated">
+            <i:InvokeCommandAction Command="{Binding WindowActivated}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Deactivated">
+            <i:InvokeCommandAction Command="{Binding WindowDeactivated}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Background="{Binding ToolPanelBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="180" />
+            <RowDefinition />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <!-- Tool Panel -->
+        <Grid Margin="6,0,6,6" DockPanel.Dock="Top" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="30"/>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding ProjectDirectory, Converter={StaticResource DirectoryStringConverter}, FallbackValue=FolderName}" Grid.ColumnSpan="7" HorizontalAlignment="Center"
+                       FontStyle="Italic" FontWeight="DemiBold" FontSize="16" Visibility="{Binding ProjectDirectory, Converter={StaticResource StringToVisibilityConverter}, FallbackValue=Visible}" Margin="0,-10,0,2"/>
+
+            <!-- Create and open buttons -->
+            <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Button Foreground="White" Command="{Binding OpenFolderCommand}" Grid.Column="0" HorizontalAlignment="Stretch">
+                    <Path Width="24.017" Height="19.2" Stretch="Uniform" UseLayoutRounding="False" Fill="White" Data="F1 M 0,6.9975C -0.0300293,6.5675 0.0212402,6.25378 0.153717,6.05627C 0.286194,5.85876 0.609985,5.76001 1.125,5.76001L 22.8975,5.76001C 23.4125,5.76001 23.7325,5.85876 23.8575,6.05627C 23.9825,6.25378 24.03,6.5675 24,6.9975L 22.995,17.9625C 22.96,18.3925 22.865,18.7063 22.71,18.9037C 22.555,19.1013 22.22,19.2 21.705,19.2L 2.31744,19.2C 1.80249,19.2 1.46747,19.1013 1.3125,18.9037C 1.15747,18.7063 1.05496,18.3925 1.00494,17.9625L 0,6.9975 Z M 2.01749,4.32001L 2.37,1.21503C 2.42996,0.855042 2.58875,0.5625 2.84622,0.337524C 3.1037,0.112549 3.38995,0 3.70499,0L 7.64249,0C 8.4375,0 9.125,0.287537 9.70499,0.862549L 10.3799,1.53754C 10.96,2.11255 11.6475,2.40002 12.4424,2.40002L 20.6475,2.40002C 20.9625,2.40002 21.2637,2.49377 21.5512,2.68127C 21.8387,2.86877 22.0225,3.09503 22.1025,3.35999L 22.335,4.32001L 2.01749,4.32001 Z "/>
+                </Button>
+                <Button Foreground="White" Command="{Binding CreateProjectCommand}" Padding="5" Grid.Column="2" HorizontalAlignment="Stretch">
+                    <Path Width="20" Height="20"  Stretch="Uniform" Fill="White" Data="M30,532.4h282.4v282.4c0,16.6,13.4,30,30,30h160c16.6,0,30-13.4,30-30V532.4h282.4c16.6,0,30-13.4,30-30v-160   c0-16.6-13.4-30-30-30H532.4V30c0-16.6-13.4-30-30-30h-160c-16.6,0-30,13.4-30,30v282.4H30c-16.6,0-30,13.4-30,30v160   C0,519,13.4,532.4,30,532.4z" />
+                </Button>
+            </Grid>
+
+            <!-- File System Menu -->
+            <ma:DropDownButton Grid.Column="2" Grid.Row="1" Content="File System" ItemsSource="{Binding FileSystemCommands}" 
+                               IsEnabled="{Binding IsExecuting, Converter={StaticResource InverseBooleanConverter}, Mode=OneWay}" 
+                               Background="#FF2F2F2F">
+                <ma:DropDownButton.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Header" Value="{Binding Header}" />
+                        <Setter Property="Command" Value="{Binding Command}" />
+                    </Style>
+                </ma:DropDownButton.ItemContainerStyle>
+            </ma:DropDownButton>
+
+            <!-- Clear parameters button -->
+            <Button Command="{Binding ClearParametersCommand}" Grid.Row="2" Grid.Column="6" Content="Clear&#10;Parameters" 
+                    TextBlock.TextAlignment="Center" Height="50" Padding="0" ma:ButtonHelper.PreserveTextCase="True"  VerticalAlignment="Center"/>
+
+            <!-- Clean Button -->
+            <Button Command="{Binding CleanCommand}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="50">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <Rectangle Width="13" Height="3" Fill="White" Margin="0,0,0,1"/>
+                        <Path Height="15" Stretch="Uniform" Fill="White" Data="M417.776,92.829H67.237V485h350.537V92.829H417.776z M165.402,431.447h-28.362V146.383h28.362V431.447z M256.689,431.447    h-28.363V146.383h28.363V431.447z M347.97,431.447h-28.361V146.383h28.361V431.447z"/>
+                    </StackPanel>
+                    <TextBlock Text="Clean" FontSize="13.333" Margin="10,0,0,0" />
+                </StackPanel>
+            </Button>
+            
+            <!-- Build Button -->
+            <Button Command="{Binding BuildCommand}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="50" >
+                <StackPanel Orientation="Horizontal">
+                    <Path Height="15" Stretch="Uniform" Fill="White" Data="F1 M 24.4815,12.6728L 9.98462,19.9692L 9.98462,5.37634L 24.4815,12.6728 Z M 3.02417,0C 1.03207,-0.119995 0.0240173,0.888062 0,3.0242L 0,22.2734C 0.0240173,24.2895 1.03207,25.2975 3.02417,25.2975L 29.4738,25.2975C 31.5779,25.2975 32.602,24.2895 32.546,22.2734L 32.546,3.0242C 32.602,0.960083 31.5779,-0.0480042 29.4738,0L 3.02417,0 Z "/>
+                    <TextBlock Text="Build" FontSize="13.333" Margin="10,0,0,0"/>
+                </StackPanel>
+                <Button.ToolTip>
+                    Builds your project
+                </Button.ToolTip>
+            </Button>
+
+            <!-- Build and upload button -->
+            <Button Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="4" Command="{Binding BuildUploadCommand}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="50"
+                        ToolTip="Builds your project and&#10;uploads it to a connected&#10;Cortex Microcontroller">
+                <StackPanel Orientation="Horizontal">
+                    <Path Height="15" Stretch="Uniform" Fill="White" Data="F1 M 24.4815,12.6728L 9.98462,19.9692L 9.98462,5.37634L 24.4815,12.6728 Z M 3.02417,0C 1.03207,-0.119995 0.0240173,0.888062 0,3.0242L 0,22.2734C 0.0240173,24.2895 1.03207,25.2975 3.02417,25.2975L 29.4738,25.2975C 31.5779,25.2975 32.602,24.2895 32.546,22.2734L 32.546,3.0242C 32.602,0.960083 31.5779,-0.0480042 29.4738,0L 3.02417,0 Z "/>
+                    <TextBlock Text="Build &amp;&#10;Upload" FontSize="13.333" Margin="10,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- Console Output -->
+        <TextBox Name="console" Text="{Binding ConsoleOutput}" Grid.Row="1" Grid.RowSpan="2" Background="{StaticResource DarkGrayBrush}" 
+                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                 FontFamily="Lucida Console" TextChanged="TextBox_TextChanged">
+            <TextBox.Template>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <ScrollViewer x:Name="PART_ContentHost" Background="{TemplateBinding Background}" >
+                        <ScrollViewer.Template>
+                            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="14" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition />
+                                        <RowDefinition Height="14" />
+                                        <RowDefinition Height="6" />
+                                        <RowDefinition Height="14" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Clear console button -->
+                                    <Button Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Command="{Binding ClearConsoleCommand}">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Background" Value="Transparent" />
+                                                <Setter Property="Foreground" Value="{Binding ToolPanelBrush}" />
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Grid Background="{TemplateBinding Background}">
+                                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                            </Grid>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="{Binding ToolPanelBrush}" />
+                                                        <Setter Property="Foreground" Value="#FF252525" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Foreground" Value="Transparent" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <TextBlock FontFamily="Segoe UI Symbol" FontSize="10" VerticalAlignment="Center">&#57610;</TextBlock>
+                                    </Button>
+
+                                    <!-- Vertical Scroll bar  -->
+                                    <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+
+                                    <!-- Horizontal Scroll bar  -->
+                                    <ScrollBar x:Name="PART_HorizontalScrollBar" VerticalAlignment="Bottom" Grid.Column="0" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" >
+                                        <ScrollBar.Style>
+                                            <Style TargetType="{x:Type ScrollBar}">
+                                                <Setter Property="Grid.Row" Value="4" />
+                                                <Setter Property="Background" Value="{x:Null}" />
+                                                <Setter Property="BorderBrush" Value="{x:Null}" />
+                                                <Setter Property="Foreground" Value="Black" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsExecuting}" Value="True">
+                                                        <Setter Property="Grid.Row" Value="2" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ScrollBar.Style>
+                                    </ScrollBar>
+
+                                    <!-- Content -->
+                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                CanHorizontallyScroll="False" CanVerticallyScroll="False"
+                                                Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}">
+                                        <ScrollContentPresenter.Style>
+                                            <Style TargetType="{x:Type ScrollContentPresenter}">
+                                                <Setter Property="Grid.RowSpan" Value="4" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsExecuting}" Value="True">
+                                                        <Setter Property="Grid.RowSpan" Value="2" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ScrollContentPresenter.Style>
+                                    </ScrollContentPresenter>
+                                </Grid>
+                            </ControlTemplate>
+                        </ScrollViewer.Template>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+
+        <!-- Status bar -->
+        <StatusBar Grid.Row="3" Visibility="{Binding IsExecuting, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Delay=1000, FallbackValue=Collapsed}">
+            <StatusBarItem HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                    <ma:ProgressRing Height="Auto" Width="Auto" Foreground="#CCF1B218" VerticalAlignment="Center" IsActive="{Binding IsExecuting, FallbackValue=True, Mode=OneWay}">
+                        <ma:ProgressRing.LayoutTransform>
+                            <ScaleTransform ScaleX=".75" ScaleY=".75"/>
+                        </ma:ProgressRing.LayoutTransform>
+                    </ma:ProgressRing>
+                    <TextBlock FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0" FontFamily="Myriad Pro">EXECUTING</TextBlock>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+
+    <ma:MetroWindow.RightWindowCommands>
+        <ma:WindowCommands>
+            <Button Content="settings" />
+        </ma:WindowCommands>
+    </ma:MetroWindow.RightWindowCommands>
+</ma:MetroWindow>
