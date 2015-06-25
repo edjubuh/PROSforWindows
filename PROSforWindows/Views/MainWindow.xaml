@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:c="clr-namespace:PROSforWindows.Converters"
         mc:Ignorable="d"
-        Height="400" MinWidth="400" Width="400" MaxWidth="600"
+        Height="400" MinWidth="400" Width="400"
         Title="PROS for Windows"
         WindowStartupLocation="CenterScreen" 
         BorderBrush="{Binding ToolPanelBrush}" WindowTitleBrush="{Binding ToolPanelBrush}" NonActiveBorderBrush="{Binding ToolPanelBrush}"  NonActiveWindowTitleBrush="{Binding ToolPanelBrush}"
@@ -37,7 +37,7 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <!-- Tool Panel -->
-        <Grid Margin="6,0,6,6" DockPanel.Dock="Top" VerticalAlignment="Stretch">
+        <Grid Margin="6,0,6,6" DockPanel.Dock="Top" VerticalAlignment="Stretch" MaxWidth="700">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="10"/>
@@ -55,7 +55,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="{Binding ProjectDirectory, Converter={StaticResource DirectoryStringConverter}, FallbackValue=FolderName}" Grid.ColumnSpan="7" HorizontalAlignment="Center"
-                       FontStyle="Italic" FontWeight="DemiBold" FontSize="16" Visibility="{Binding ProjectDirectory, Converter={StaticResource StringToVisibilityConverter}, FallbackValue=Visible}" Margin="0,-10,0,2"/>
+                       FontStyle="Italic" FontWeight="DemiBold" FontSize="16" Visibility="{Binding ProjectDirectory, Converter={StaticResource StringToVisibilityConverter}, FallbackValue=Visible}" Margin="0,-25,0,2"/>
 
             <!-- Create and open buttons -->
             <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch">
@@ -73,16 +73,16 @@
             </Grid>
 
             <!-- File System Menu -->
-            <ma:DropDownButton Grid.Column="2" Grid.Row="1" Content="File System" ItemsSource="{Binding FileSystemCommands}" 
-                               IsEnabled="{Binding IsExecuting, Converter={StaticResource InverseBooleanConverter}, Mode=OneWay}" 
-                               Background="#FF2F2F2F">
-                <ma:DropDownButton.ItemContainerStyle>
-                    <Style TargetType="MenuItem">
-                        <Setter Property="Header" Value="{Binding Header}" />
-                        <Setter Property="Command" Value="{Binding Command}" />
-                    </Style>
-                </ma:DropDownButton.ItemContainerStyle>
-            </ma:DropDownButton>
+            <Button Grid.Column="2" Grid.Row="1" Padding="0" Command="{Binding EnabledCommand}">
+                <ma:DropDownButton Content="File System" ItemsSource="{Binding FileSystemCommands}" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0">
+                    <ma:DropDownButton.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Header}" />
+                            <Setter Property="Command" Value="{Binding Command}" />
+                        </Style>
+                    </ma:DropDownButton.ItemContainerStyle>
+                </ma:DropDownButton>
+            </Button>
 
             <!-- Clear parameters button -->
             <Button Command="{Binding ClearParametersCommand}" Grid.Row="2" Grid.Column="6" Content="Clear&#10;Parameters" 
@@ -122,7 +122,7 @@
 
         <!-- Console Output -->
         <TextBox Name="console" Text="{Binding ConsoleOutput}" Grid.Row="1" Grid.RowSpan="2" Background="{StaticResource DarkGrayBrush}" 
-                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="5"
                  FontFamily="Lucida Console" TextChanged="TextBox_TextChanged">
             <TextBox.Template>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -173,7 +173,7 @@
                                     </Button>
 
                                     <!-- Vertical Scroll bar  -->
-                                    <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                    <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
 
                                     <!-- Horizontal Scroll bar  -->
                                     <ScrollBar x:Name="PART_HorizontalScrollBar" VerticalAlignment="Bottom" Grid.Column="0" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" >
@@ -233,7 +233,7 @@
 
     <ma:MetroWindow.RightWindowCommands>
         <ma:WindowCommands>
-            <Button Content="settings" />
+            <Button Content="settings" Command="{Binding SettingsCommand}" />
         </ma:WindowCommands>
     </ma:MetroWindow.RightWindowCommands>
 </ma:MetroWindow>

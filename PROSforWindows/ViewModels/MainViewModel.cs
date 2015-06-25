@@ -1,4 +1,6 @@
-﻿using PROSforWindows.Commands;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using PROSforWindows.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,12 +8,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using MahApps.Metro.Controls.Dialogs;
-using MahApps.Metro.Controls;
-using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace PROSforWindows.ViewModels
 {
@@ -43,7 +43,7 @@ namespace PROSforWindows.ViewModels
             get { return consoleOutput; }
             set
             {
-                if (value != consoleOutput && !(value.Equals("\n\n\n") && string.IsNullOrEmpty(consoleOutput)))
+                if (value != consoleOutput && !(new Regex(@"^(\n){1,}$").IsMatch(value) && string.IsNullOrEmpty(consoleOutput)))
                 {
                     consoleOutput = value;
                     OnPropertyChanged(nameof(ConsoleOutput));
@@ -152,50 +152,72 @@ namespace PROSforWindows.ViewModels
 
             foreach (string command in commands)
             {
-                executeCommand(command);
+                await executeCommand(command);
             }
             ConsoleOutput += "...done...";
             IsExecuting = false;
         }
 
-        void ExecuteCommand(string command)
+        async void ExecuteCommand(string command)
         {
             IsExecuting = true;
             ConsoleOutput += "\n\n\n";
-            executeCommand(command);
+            await executeCommand(command);
             ConsoleOutput += "...done...";
             IsExecuting = false;
         }
 
-        void executeCommand(string command, string workingDir = "")
+        async Task executeCommand(string command)
         {
-            // Work-around for compile-time constraint for default values on parameters
-            if (string.IsNullOrWhiteSpace(workingDir)) workingDir = ProjectDirectory;
+            await executeCommand(command, ProjectDirectory);
+        }
+
+        private DataReceivedEventHandler dataRecievedHandler;
+
+        async Task executeCommand(string command, string workingDirectory)
+        {
 
             ConsoleOutput += "> " + command + "\n";
-            Process p = new Process();
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.WorkingDirectory = workingDir;
-            if (command.Contains(" "))
+            using (Process process = new Process())
             {
-                p.StartInfo.FileName = command.Split(' ')[0];
-                p.StartInfo.Arguments = command.Substring(command.IndexOf(' '));
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.WorkingDirectory = workingDirectory;
+
+                if (command.Contains(" "))
+                {
+                    process.StartInfo.FileName = command.Split(' ')[0];
+                    process.StartInfo.Arguments = command.Substring(command.IndexOf(' '));
+                }
+                else
+                {
+                    process.StartInfo.FileName = command;
+                }
+
+                Stopwatch stopwatch = new Stopwatch();
+
+                process.OutputDataReceived += (s, e) =>
+                {
+                    ConsoleOutput += e.Data + "\n";
+                    stopwatch.Restart();
+                };
+
+                process.ErrorDataReceived += (s, e) =>
+                {
+                    ConsoleOutput += e.Data + "\n";
+                    stopwatch.Restart();
+                };
+
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                while (!process.HasExited || stopwatch.ElapsedMilliseconds < 500) await Task.Delay(1);
             }
-            else
-            {
-                p.StartInfo.FileName = command;
-            }
-            p.Start();
-            string error = "", output = "";
-            while (!p.HasExited || (error = p.StandardError.ReadLine()) != null || (output = p.StandardOutput.ReadLine()) != null)
-            {
-                ConsoleOutput += string.IsNullOrEmpty(error) ? "" : (error + "\n");
-                ConsoleOutput += string.IsNullOrEmpty(output) ? "" : (output + "\n");
-            }
-            ConsoleOutput += "\n";
+
+            ConsoleOutput += ConsoleOutput.EndsWith("\n") ? "" : "\n";
         }
 
         public ObservableCollection<ButtonCommand> FileSystemCommands { get; set; }
@@ -237,15 +259,22 @@ namespace PROSforWindows.ViewModels
             Parameters.Clear();
         }
 
+        public ICommand EnabledCommand { get; set; }
+        void doNothing(object o) { }
 
         public MainViewModel(MetroWindow window)
         {
+            dataRecievedHandler = new DataReceivedEventHandler((s, e) =>
+            {
+                ConsoleOutput += e.Data + "\n";
+            });
+
             WindowActivated = new RelayCommand(windowActivated);
             WindowDeactivated = new RelayCommand(windowDeactivated);
             ClearConsoleCommand = new RelayCommand(clearConsole, _ => { return !string.IsNullOrWhiteSpace(ConsoleOutput); });
             OpenFolderCommand = new RelayCommand(openFolder);
 
-            ClearParametersCommand = new ListenCommand
+            ClearParametersCommand = new ListenCommand(Dispatcher.CurrentDispatcher)
             {
                 Execute = clearParameters,
                 CanExecuteDelegate = (r) => Parameters.Count > 0
@@ -254,6 +283,7 @@ namespace PROSforWindows.ViewModels
             BuildCommand = createExecutionCommand(buildCommand);
             BuildUploadCommand = createExecutionCommand(buildUploadCommand);
             CleanCommand = createExecutionCommand(cleanCommand);
+            EnabledCommand = createExecutionCommand(doNothing);
 
             FileSystemCommands = new ObservableCollection<ButtonCommand>(new List<ButtonCommand>()
                 {
@@ -270,7 +300,7 @@ namespace PROSforWindows.ViewModels
 
         ICommand createExecutionCommand(Action<object> action)
         {
-            var command = new ListenCommand
+            var command = new ListenCommand(Dispatcher.CurrentDispatcher)
             {
                 Execute = action,
                 CanExecuteDelegate = (r) => (!IsExecuting && !string.IsNullOrWhiteSpace(ProjectDirectory))
