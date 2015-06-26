@@ -1,0 +1,45 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PROSforWindows.Resources">
+    <!-- Colors-->
+    <Color x:Key="CampusGoldColor">#B1810B</Color>
+
+    <Color x:Key="CoalGrayColor">#4D4038</Color>
+    <Color x:Key="MoonDustGrayColor">#BAA892</Color>
+    <Color x:Key="EverTrueBlueColor">#5B6870</Color>
+    <Color x:Key="SlayterSkyBlueColor">#7CA6C0</Color>
+    <Color x:Key="AmeliaSkyBlueColor">#A3D6D7</Color>
+    <Color x:Key="LandGrantGreenColor">#085C11</Color>
+    <Color x:Key="RossAdeGreenColor">#849E2A</Color>
+    <Color x:Key="CeleryBogGreenColor">#C3BE0B</Color>
+    <Color x:Key="SpringFestGreenColor">#E9E45B</Color>
+    <Color x:Key="OakenBucketBrownColor">#6B4536</Color>
+    <Color x:Key="BellTowerBrickColor">#C76C14</Color>
+    <Color x:Key="MackeyOrangeColor">#FF9B1A</Color>
+    <Color x:Key="YellowWalkColor">#FFD100</Color>
+    <Color x:Key="FountainRunTealColor">#2EAF9B</Color>
+    <Color x:Key="PappysPurpleColor">#AD1F65</Color>
+    
+    <!-- Core Colors -->
+    <SolidColorBrush x:Key="Black" Color="Black" />
+    <SolidColorBrush x:Key="CampusGold" Color="{StaticResource CampusGoldColor}" />
+    <SolidColorBrush x:Key="White" Color="White" />
+    
+    <!-- Secondary Colors -->
+    <SolidColorBrush x:Key="CoalGray" Color="{StaticResource CoalGrayColor}" />
+    <SolidColorBrush x:Key="MoonDustGray" Color="{StaticResource MoonDustGrayColor}" />
+    <SolidColorBrush x:Key="EverTrueBlue" Color="{StaticResource EverTrueBlueColor}" />
+    <SolidColorBrush x:Key="SlayterSkyBlue" Color="{StaticResource SlayterSkyBlueColor}" />
+    <SolidColorBrush x:Key="AmeliaSkyBlue" Color="{StaticResource AmeliaSkyBlueColor}" />
+    <SolidColorBrush x:Key="LandGrantGreen" Color="{StaticResource LandGrantGreenColor}" />
+    <SolidColorBrush x:Key="RossAdeGreen" Color="{StaticResource RossAdeGreenColor}" />
+    <SolidColorBrush x:Key="CeleryBogGreen" Color="{StaticResource CeleryBogGreenColor}" />
+    <SolidColorBrush x:Key="SpringFestGreen" Color="{StaticResource SpringFestGreenColor}" />
+    <SolidColorBrush x:Key="OakenBucketBrown" Color="{StaticResource OakenBucketBrownColor}" />
+    <SolidColorBrush x:Key="BellTowerBrick" Color="{StaticResource BellTowerBrickColor}" />
+    <SolidColorBrush x:Key="MackeyOrange" Color="{StaticResource MackeyOrangeColor}" />
+    <SolidColorBrush x:Key="YellowWalk" Color="{StaticResource YellowWalkColor}" />
+    <SolidColorBrush x:Key="FountainRunTeal" Color="{StaticResource FountainRunTealColor}" />
+    <SolidColorBrush x:Key="PappysPurple" Color="{StaticResource PappysPurpleColor}" />
+    
+ </ResourceDictionary>
