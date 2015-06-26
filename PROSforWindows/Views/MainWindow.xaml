@@ -1,15 +1,15 @@
-﻿<ma:MetroWindow x:Class="PROSforWindows.MainWindow"
+﻿<ma:MetroWindow x:Class="PROSforWindows.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PROSforWindows"
+        xmlns:local="clr-namespace:PROSforWindows.Views"
         xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:c="clr-namespace:PROSforWindows.Converters"
         mc:Ignorable="d"
-        Height="400" MinWidth="400" Width="400"
-        Title="PROS for Windows"
+        Height="550" MinWidth="400" Width="600"
+        ShowIconOnTitleBar="True" HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen" 
         BorderBrush="{Binding ToolPanelBrush}" WindowTitleBrush="{Binding ToolPanelBrush}" NonActiveBorderBrush="{Binding ToolPanelBrush}"  NonActiveWindowTitleBrush="{Binding ToolPanelBrush}"
         BorderThickness="1.25px"
@@ -20,6 +20,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <c:DirectoryStringConverter x:Key="DirectoryStringConverter" />
         <c:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <FontFamily x:Key="HeaderFontFamily">Myriad Pro Bold</FontFamily>
     </ma:MetroWindow.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Activated">
@@ -54,9 +55,10 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
+            <!--
             <TextBlock Text="{Binding ProjectDirectory, Converter={StaticResource DirectoryStringConverter}, FallbackValue=FolderName}" Grid.ColumnSpan="7" HorizontalAlignment="Center"
                        FontStyle="Italic" FontWeight="DemiBold" FontSize="16" Visibility="{Binding ProjectDirectory, Converter={StaticResource StringToVisibilityConverter}, FallbackValue=Visible}" Margin="0,-25,0,2"/>
-
+-->
             <!-- Create and open buttons -->
             <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -98,7 +100,7 @@
                     <TextBlock Text="Clean" FontSize="13.333" Margin="10,0,0,0" />
                 </StackPanel>
             </Button>
-            
+
             <!-- Build Button -->
             <Button Command="{Binding BuildCommand}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="50" >
                 <StackPanel Orientation="Horizontal">

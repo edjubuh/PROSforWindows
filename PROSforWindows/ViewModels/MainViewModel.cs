@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using PROSforWindows.Commands;
+using PROSforWindows.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +66,7 @@ namespace PROSforWindows.ViewModels
             }
         }
 
-
+        #region Window Color Functionality
         Brush toolPanelBrush;
         public Brush ToolPanelBrush
         {
@@ -91,7 +92,9 @@ namespace PROSforWindows.ViewModels
         {
             ToolPanelBrush = (Brush)(window.FindResource("MoonDustGrayBrush"));
         }
+        #endregion
 
+        #region Commands
         public ICommand ClearConsoleCommand { get; set; }
         void clearConsole(object o)
         {
@@ -106,7 +109,16 @@ namespace PROSforWindows.ViewModels
             if (File.Exists(dialog.SelectedPath + "\\firmware\\uniflash.jar"))
                 ProjectDirectory = dialog.SelectedPath;
         }
+        public ICommand SettingsCommand { get; set; }
+        void openSettingsWindow(object o)
+        {
+            var window = new SettingsWindow();
+            window.DataContext = new SettingsViewModel(this);
+            window.ShowDialog();
+        }
+        #endregion
 
+        #region Console Commands
         Dictionary<string, string> parameters = new Dictionary<string, string>();
         public Dictionary<string, string> Parameters
         {
@@ -261,6 +273,7 @@ namespace PROSforWindows.ViewModels
 
         public ICommand EnabledCommand { get; set; }
         void doNothing(object o) { }
+        #endregion
 
         public MainViewModel(MetroWindow window)
         {
@@ -273,6 +286,7 @@ namespace PROSforWindows.ViewModels
             WindowDeactivated = new RelayCommand(windowDeactivated);
             ClearConsoleCommand = new RelayCommand(clearConsole, _ => { return !string.IsNullOrWhiteSpace(ConsoleOutput); });
             OpenFolderCommand = new RelayCommand(openFolder);
+            SettingsCommand = new RelayCommand(openSettingsWindow);
 
             ClearParametersCommand = new ListenCommand(Dispatcher.CurrentDispatcher)
             {

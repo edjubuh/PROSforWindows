@@ -17,7 +17,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/PROSStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <FontFamily x:Key="HeaderFontFamily">Myriad Pro Bold</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
