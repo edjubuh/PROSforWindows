@@ -12,6 +12,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <c:CutoffConverter x:Key="CutoffConverter" />
             <c:UriToNameConverter x:Key="UriToNameConverter" />
+            <c:UriToImageConverter x:Key="UriToImageConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -55,6 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\FolderPicker.xaml.cs">
+      <DependentUpon>FolderPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\UriToImageConverter.cs" />
+    <Compile Include="Converters\UriToNameConverter.cs" />
+    <Page Include="Controls\FolderPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -78,7 +87,6 @@
     <Compile Include="Commands\ListenRelayCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\CutoffConverter.cs" />
-    <Compile Include="Converters\UriToNameConverter.cs" />
     <Compile Include="Resources\Class1.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -118,7 +126,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <Resource Include="Resources\img\HDD-26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MahApps.Metro\MahApps.Metro\MahApps.Metro.NET45.csproj">
@@ -133,6 +143,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\img\Opened Folder-100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\img\Folder-26.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

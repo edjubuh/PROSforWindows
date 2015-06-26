@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:PROSforWindows.Resources">
     <!-- Colors-->
     <Color x:Key="CampusGoldColor">#B1810B</Color>
+    <Color x:Key="DarkGrayColor">#FF252525</Color>
 
     <Color x:Key="CoalGrayColor">#4D4038</Color>
     <Color x:Key="MoonDustGrayColor">#BAA892</Color>
@@ -24,6 +25,7 @@
     <SolidColorBrush x:Key="Black" Color="Black" />
     <SolidColorBrush x:Key="CampusGold" Color="{StaticResource CampusGoldColor}" />
     <SolidColorBrush x:Key="White" Color="White" />
+    <SolidColorBrush x:Key="DarkGray" Color="{StaticResource DarkGrayColor}" />
     
     <!-- Secondary Colors -->
     <SolidColorBrush x:Key="CoalGray" Color="{StaticResource CoalGrayColor}" />

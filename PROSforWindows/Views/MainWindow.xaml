@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PROSforWindows.Views"
         xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:u="clr-namespace:PROSforWindows.Controls"
         mc:Ignorable="d" 
         Title="{Binding ProjectDirectory, Converter={StaticResource UriToNameConverter}, FallbackValue=PROS for Windows}" TitleAlignment="Center"
         Height="350" Width="525" MinWidth="400" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
@@ -115,7 +116,7 @@
                 </Button.Style>
             </Button>
         </Grid>
-        
+
         <!-- Console Output -->
         <TextBox Name="console" Text="{Binding ConsoleOutput}" Grid.Row="1" Grid.RowSpan="2" 
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="5"
@@ -205,5 +206,19 @@
         </TextBox>
         <StackPanel Grid.Row="2" >
         </StackPanel>
+        <Grid Grid.Row="0" Margin="0,70,0,0" Grid.RowSpan="2" Background="{StaticResource DarkGray}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Recent Projects" FontSize="16" Foreground="White" Grid.Row="0" Grid.Column="0" Margin="5"/>
+            <ListView Grid.Row="1" Grid.Column="0" Margin="0,5" />
+            <TextBlock Text="Open Project" FontSize="16" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="5"/>
+            <u:FolderPicker Grid.Column="1" Grid.Row="1" Margin="0,5"/>
+        </Grid>
     </Grid>
 </ma:MetroWindow>
