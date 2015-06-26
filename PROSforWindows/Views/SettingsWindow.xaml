@@ -1,0 +1,123 @@
+﻿<m:MetroWindow x:Class="PROSforWindows.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PROSforWindows.Views"
+        xmlns:m="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:c="clr-namespace:PROSforWindows.Controls"
+        mc:Ignorable="d"
+        Title="settings" Height="400" Width="500" ResizeMode="NoResize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" 
+        BorderThickness="1.25px" EnableDWMDropShadow="True" TitleCaps="False">
+    <m:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="HeaderFontFamily">Myriad Pro</FontFamily>
+        </ResourceDictionary>
+    </m:MetroWindow.Resources>
+    <m:MetroAnimatedSingleRowTabControl TabStripMargin="2">
+        <m:MetroTabItem Header="Project " >
+            <Rectangle />
+        </m:MetroTabItem>
+        <m:MetroTabItem Header="Application ">
+            <TextBox />
+        </m:MetroTabItem>
+        <m:MetroTabItem Header="Updates">
+            <DockPanel Margin="5">
+                <StackPanel>
+                    <TextBlock Text="Update PROS"  FontSize="18" FontFamily="Segoe UI Semibold"/>
+                    <c:SoftwareUpdater ItemName="PROS" CurrentVersion="0.1.0"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding PROSVersion, StringFormat=PROS Version: {0}, FallbackValue=PROS Version: 2b10}" VerticalAlignment="Center"/>
+                        <Button Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding CheckForPROSUpdateCommand}" Width="40" Height="40">
+                            <StackPanel>
+                                <StackPanel.RenderTransform>
+                                    <RotateTransform Angle="0" CenterX="10" CenterY="10" />
+                                </StackPanel.RenderTransform>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CheckingForPROSUpdate, FallbackValue=True}" Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" 
+                                                                             By="5" To="360" Duration="0:0:5" RepeatBehavior="Forever" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" 
+                                                                             By="10" To="0" Duration="0:0:5" FillBehavior="HoldEnd" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <Path Width="20" Height="10" VerticalAlignment="Top" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M55.323,203.641c15.664,0,29.813-9.405,35.872-23.854c25.017-59.604,83.842-101.61,152.42-101.61    c37.797,0,72.449,12.955,100.23,34.442l-21.775,3.371c-7.438,1.153-13.224,7.054-14.232,14.512    c-1.01,7.454,3.008,14.686,9.867,17.768l119.746,53.872c5.249,2.357,11.33,1.904,16.168-1.205    c4.83-3.114,7.764-8.458,7.796-14.208l0.621-131.943c0.042-7.506-4.851-14.144-12.024-16.332    c-7.185-2.188-14.947,0.589-19.104,6.837l-16.505,24.805C370.398,26.778,310.1,0,243.615,0C142.806,0,56.133,61.562,19.167,149.06    c-5.134,12.128-3.84,26.015,3.429,36.987C29.865,197.023,42.152,203.641,55.323,203.641z "/>
+                                <Path Width="20" Height="10" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M464.635,301.184c-7.27-10.977-19.558-17.594-32.728-17.594c-15.664,0-29.813,9.405-35.872,23.854    c-25.018,59.604-83.843,101.61-152.42,101.61c-37.798,0-72.45-12.955-100.232-34.442l21.776-3.369    c7.437-1.153,13.223-7.055,14.233-14.514c1.009-7.453-3.008-14.686-9.867-17.768L49.779,285.089    c-5.25-2.356-11.33-1.905-16.169,1.205c-4.829,3.114-7.764,8.458-7.795,14.207l-0.622,131.943    c-0.042,7.506,4.85,14.144,12.024,16.332c7.185,2.188,14.948-0.59,19.104-6.839l16.505-24.805    c44.004,43.32,104.303,70.098,170.788,70.098c100.811,0,187.481-61.561,224.446-149.059    C473.197,326.043,471.903,312.157,464.635,301.184z"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBlock Text="Update available! Update to 2b11" VerticalAlignment="Center" Foreground="Red" Margin="10,0,0,0"/>
+                        <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="40" Height="40">
+                            <StackPanel>
+                                <Path Width="12" Height="16" VerticalAlignment="Top" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M253.94,427.635c4.208,4.208,9.716,6.35,15.147,6.35c5.508,0,11.016-2.142,15.147-6.35l147.033-147.033    c8.339-8.338,8.339-21.955,0-30.447l-20.349-20.349c-8.339-8.339-21.956-8.339-30.447,0l-75.582,75.659V21.497    C304.889,9.639,295.173,0,283.393,0h-28.688c-11.857,0-21.497,9.562-21.497,21.497v284.044l-75.658-75.659    c-8.339-8.338-22.032-8.338-30.447,0l-20.349,20.349c-8.338,8.338-8.338,22.032,0,30.447L253.94,427.635z" />
+                                <Path Width="15" VerticalAlignment="Top" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M463.091,466.114H74.854c-11.857,0-21.497,9.716-21.497,21.497v28.688c0,11.857,9.716,21.496,21.497,21.496h388.084    c11.857,0,21.496-9.716,21.496-21.496v-28.688C484.665,475.677,474.949,466.114,463.091,466.114z" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Text="Update Apps"  FontSize="18" FontFamily="Segoe UI Semibold"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding ApplicationVersion, StringFormat=PROS for Windows Version: {0}, FallbackValue=PROS for Windows Version: 0.1.0.0}" VerticalAlignment="Center"/>
+                        <Button Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding CheckForPROSUpdateCommand}" Width="40" Height="40">
+                            <StackPanel>
+                                <StackPanel.RenderTransform>
+                                    <RotateTransform Angle="0" CenterX="10" CenterY="10" />
+                                </StackPanel.RenderTransform>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CheckingForPROSUpdate, FallbackValue=True}" Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" 
+                                                                             By="5" To="360" Duration="0:0:5" RepeatBehavior="Forever" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" 
+                                                                             By="10" To="0" Duration="0:0:5" FillBehavior="HoldEnd" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <Path Width="20" Height="10" VerticalAlignment="Top" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M55.323,203.641c15.664,0,29.813-9.405,35.872-23.854c25.017-59.604,83.842-101.61,152.42-101.61    c37.797,0,72.449,12.955,100.23,34.442l-21.775,3.371c-7.438,1.153-13.224,7.054-14.232,14.512    c-1.01,7.454,3.008,14.686,9.867,17.768l119.746,53.872c5.249,2.357,11.33,1.904,16.168-1.205    c4.83-3.114,7.764-8.458,7.796-14.208l0.621-131.943c0.042-7.506-4.851-14.144-12.024-16.332    c-7.185-2.188-14.947,0.589-19.104,6.837l-16.505,24.805C370.398,26.778,310.1,0,243.615,0C142.806,0,56.133,61.562,19.167,149.06    c-5.134,12.128-3.84,26.015,3.429,36.987C29.865,197.023,42.152,203.641,55.323,203.641z "/>
+                                <Path Width="20" Height="10" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M464.635,301.184c-7.27-10.977-19.558-17.594-32.728-17.594c-15.664,0-29.813,9.405-35.872,23.854    c-25.018,59.604-83.843,101.61-152.42,101.61c-37.798,0-72.45-12.955-100.232-34.442l21.776-3.369    c7.437-1.153,13.223-7.055,14.233-14.514c1.009-7.453-3.008-14.686-9.867-17.768L49.779,285.089    c-5.25-2.356-11.33-1.905-16.169,1.205c-4.829,3.114-7.764,8.458-7.795,14.207l-0.622,131.943    c-0.042,7.506,4.85,14.144,12.024,16.332c7.185,2.188,14.948-0.59,19.104-6.839l16.505-24.805    c44.004,43.32,104.303,70.098,170.788,70.098c100.811,0,187.481-61.561,224.446-149.059    C473.197,326.043,471.903,312.157,464.635,301.184z"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBlock Text="Update available! Update to 2b11" VerticalAlignment="Center" Foreground="Red" Margin="10,0,0,0"/>
+                        <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="40" Height="40">
+                            <StackPanel>
+                                <Path Width="12" Height="16" VerticalAlignment="Top" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M253.94,427.635c4.208,4.208,9.716,6.35,15.147,6.35c5.508,0,11.016-2.142,15.147-6.35l147.033-147.033    c8.339-8.338,8.339-21.955,0-30.447l-20.349-20.349c-8.339-8.339-21.956-8.339-30.447,0l-75.582,75.659V21.497    C304.889,9.639,295.173,0,283.393,0h-28.688c-11.857,0-21.497,9.562-21.497,21.497v284.044l-75.658-75.659    c-8.339-8.338-22.032-8.338-30.447,0l-20.349,20.349c-8.338,8.338-8.338,22.032,0,30.447L253.94,427.635z" />
+                                <Path Width="15" VerticalAlignment="Top" Stretch="Uniform" UseLayoutRounding="False" Fill="Black" Data="M463.091,466.114H74.854c-11.857,0-21.497,9.716-21.497,21.497v28.688c0,11.857,9.716,21.496,21.497,21.496h388.084    c11.857,0,21.496-9.716,21.496-21.496v-28.688C484.665,475.677,474.949,466.114,463.091,466.114z" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+        </m:MetroTabItem>
+    </m:MetroAnimatedSingleRowTabControl>
+</m:MetroWindow>
