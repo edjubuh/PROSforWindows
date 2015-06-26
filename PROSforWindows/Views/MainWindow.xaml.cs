@@ -11,8 +11,8 @@ namespace PROSforWindows.Views
     {
         public MainWindow()
         {
-            InitializeComponent();
             DataContext = new MainViewModel();
+            InitializeComponent();
         }
 
         private void console_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

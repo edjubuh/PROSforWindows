@@ -13,6 +13,8 @@
             <c:CutoffConverter x:Key="CutoffConverter" />
             <c:UriToNameConverter x:Key="UriToNameConverter" />
             <c:UriToImageConverter x:Key="UriToImageConverter" />
+            <c:StringToBooleanConverter x:Key="StringToBooleanConverter" />
+            <c:ObjectNotNullConverter x:Key="ObjectNotNullConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

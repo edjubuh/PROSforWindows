@@ -1,7 +1,9 @@
 ﻿using PROSforWindows.Commands;
+using PROSforWindows.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,16 +42,44 @@ namespace PROSforWindows.ViewModels
             }
         }
 
+        bool _openingFolder = false;
+        public bool OpeningFolder
+        {
+            get { return _openingFolder; }
+            set
+            {
+                if(_openingFolder != value)
+                {
+                    _openingFolder = value;
+                    OnPropertyChanged(nameof(OpeningFolder));
+                }
+            }
+        }
+
         public ICommand ClearConsoleCommand { get; set; }
         void clearConsole(object o) { ConsoleOutput = ""; }
 
         public ICommand OpenCommand { get; set; }
-        void openCommand(object o) { ConsoleOutput = "hi"; }
+        void openCommand(object o)
+        {
+            OpeningFolder = !OpeningFolder;
+        }
+
+        public ICommand OpenFolderCommand { get; set; }
+        void openFolderCommand(object o)
+        {
+            if (File.Exists((string)o + "\\firmware\\uniflash.jar"))
+            {
+                ProjectDirectory = (string)o;
+                OpeningFolder = false;
+                ConsoleOutput = "> Opened project: " + (string)o;
+            }
+        }
 
         public MainViewModel()
         {
             OpenCommand = new RelayCommand(openCommand);
-            //ClearConsoleCommand = new RelayCommand(clearConsole, (o) => { return !string.IsNullOrWhiteSpace(ConsoleOutput); });
+            OpenFolderCommand = new RelayCommand(openFolderCommand);
             ClearConsoleCommand = new ListenRelayCommand(Dispatcher.CurrentDispatcher)
             {
                 Execute = clearConsole,

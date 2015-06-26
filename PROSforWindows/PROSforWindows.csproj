@@ -58,6 +58,9 @@
     <Compile Include="Controls\FolderPicker.xaml.cs">
       <DependentUpon>FolderPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\FolderToStringConverter.cs" />
+    <Compile Include="Converters\ObjectNotNullConverter.cs" />
+    <Compile Include="Converters\StringToBooleanConverter.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />
     <Compile Include="Converters\UriToNameConverter.cs" />
     <Page Include="Controls\FolderPicker.xaml">

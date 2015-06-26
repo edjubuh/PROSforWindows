@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PROSforWindows.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -21,30 +22,55 @@ namespace PROSforWindows.Controls
     /// <summary>
     /// Interaction logic for FolderPicker.xaml
     /// </summary>
-    public partial class FolderPicker : UserControl, INotifyPropertyChanged
+    public partial class FolderPicker : UserControl
     {
+        public static readonly DependencyProperty SelectButtonTextProperty =
+                DependencyProperty.Register(nameof(SelectButtonText), typeof(string), typeof(FolderPicker), new PropertyMetadata("Select"));
+
+        public static readonly DependencyProperty SelectCommandProperty =
+            DependencyProperty.Register(nameof(SelectCommand), typeof(ICommand), typeof(FolderPicker));
+
+        public static readonly DependencyProperty SelectedFolderProperty =
+            DependencyProperty.Register(nameof(SelectedFolder), typeof(string), typeof(FolderPicker));
+
         public string SelectButtonText
         {
             get { return (string)GetValue(SelectButtonTextProperty); }
             set { SetValue(SelectButtonTextProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SelectButtonText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectButtonTextProperty =
-            DependencyProperty.Register("SelectButtonText", typeof(string), typeof(FolderPicker), new PropertyMetadata("Select"));
+        public ICommand SelectCommand
+        {
+            get { return (ICommand)GetValue(SelectCommandProperty); }
+            set { SetValue(SelectCommandProperty, value); }
+        }
 
+        public string SelectedFolder
+        {
+            get { return (string)GetValue(SelectedFolderProperty); }
+            set { SetValue(SelectedFolderProperty, value); }
+        }
+        
         public ObservableCollection<Folder> Items { get; set; } = new ObservableCollection<Folder>();
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public FolderPicker()
         {
-            InitializeComponent();
             DataContext = this;
             foreach (string path in Directory.GetLogicalDrives())
                 Items.Add((new Folder(path)).LoadChildren(null, new RoutedEventArgs()));
             if (Items.Count == 1)
                 Items[0].IsExpanded = true;
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SelectCommand?.Execute(SelectedFolder);
+        }
+
+        private void tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            SelectedFolder = ((Folder)e.NewValue).Path;
         }
     }
 
