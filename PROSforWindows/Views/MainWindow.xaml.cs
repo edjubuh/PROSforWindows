@@ -14,5 +14,10 @@ namespace PROSforWindows.Views
             InitializeComponent();
             DataContext = new MainViewModel();
         }
+
+        private void console_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            console.ScrollToEnd();
+        }
     }
 }

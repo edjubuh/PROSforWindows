@@ -2,12 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PROSforWindows"
+             xmlns:c="clr-namespace:PROSforWindows.Converters"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/PurdueColors.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <c:CutoffConverter x:Key="CutoffConverter" />
+            <c:UriToNameConverter x:Key="UriToNameConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

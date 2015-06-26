@@ -1,12 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:PROSforWindows.Views">
+                    xmlns:local="clr-namespace:PROSforWindows.Views"
+                    xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Resources/PurdueColors.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <FontFamily x:Key="HeaderFontFamily">Myriad Pro Bold, Segoe UI Light, Lucida Sans Unicode, Verdana</FontFamily>
-
 </ResourceDictionary>
