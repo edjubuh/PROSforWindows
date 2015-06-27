@@ -15,7 +15,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Views/MainWindowDictionary.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Resources/PurdueAccent.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -65,7 +64,8 @@
 
             <!-- Buttons -->
             <!-- New Button -->
-            <Button Content="{DynamicResource NewIcon}" Height="27">
+            <Button Content="{DynamicResource NewIcon}" Command="{Binding NewProjectCommand}"
+                    Height="27">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
                         <Setter Property="Grid.Row" Value="0" />

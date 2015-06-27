@@ -1,6 +1,4 @@
 ﻿using MahApps.Metro.Controls;
-using PROSforWindows.ViewModels;
-using System.Windows;
 
 namespace PROSforWindows.Views
 {
@@ -11,7 +9,6 @@ namespace PROSforWindows.Views
     {
         public MainWindow()
         {
-            DataContext = new MainViewModel();
             InitializeComponent();
         }
 

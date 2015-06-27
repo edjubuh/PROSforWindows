@@ -1,17 +1,13 @@
 ﻿using Newtonsoft.Json;
 using PROSforWindows.Commands;
-using PROSforWindows.Converters;
 using PROSforWindows.Models;
-using System;
-using System.Collections.Generic;
+using PROSforWindows.Resources;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace PROSforWindows.ViewModels
 {
@@ -30,6 +26,27 @@ namespace PROSforWindows.ViewModels
                 }
             }
         }
+
+        #region New project members
+        ICommand _newProjectCommand;
+        public ICommand NewProjectCommand
+        {
+            get { return _newProjectCommand; }
+            set
+            {
+                if (_newProjectCommand != value)
+                {
+                    _newProjectCommand = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NewProjectCommand)));
+                }
+            }
+        }
+        void newProject(object o)
+        {
+            DialogService.GetCurrentWindow().ShowMessageAsync("Hello world!", "I'm working!");
+        }
+
+        #endregion
 
         #region Open project members
         bool _openingFolder = false;
@@ -85,15 +102,16 @@ namespace PROSforWindows.ViewModels
 
         #region Buttons
         public ObservableCollection<Button> Buttons { get; set; } = new ObservableCollection<Button>();
-
         #endregion
 
-
+        #region Console members
         public ICommand ClearConsoleCommand { get; set; }
         void clearConsole(object o) { Project.Output = ""; }
+        #endregion
 
         public MainViewModel()
         {
+            NewProjectCommand = new RelayCommand(newProject);
             OpenCommand = new RelayCommand(openButtonCommand);
             OpenFolderCommand = new RelayCommand(openFolderCommand);
             ClearConsoleCommand = new ListenRelayCommand(Dispatcher.CurrentDispatcher)

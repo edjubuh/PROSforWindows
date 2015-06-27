@@ -3,15 +3,6 @@
                     xmlns:local="clr-namespace:PROSforWindows.Views"
                     xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:s="clr-namespace:PROSforWindows.Selectors">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-        <!-- <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" /> -->
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
-        
-        <ResourceDictionary Source="pack://application:,,,/Resources/PurdueColors.xaml" />
-    </ResourceDictionary.MergedDictionaries>
 
     <FontFamily x:Key="HeaderFontFamily">Myriad Pro Bold, Segoe UI Light, Lucida Sans Unicode, Verdana</FontFamily>
 
