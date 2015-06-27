@@ -4,17 +4,95 @@
                     xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:s="clr-namespace:PROSforWindows.Selectors">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <!-- <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" /> -->
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+        
         <ResourceDictionary Source="pack://application:,,,/Resources/PurdueColors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <FontFamily x:Key="HeaderFontFamily">Myriad Pro Bold, Segoe UI Light, Lucida Sans Unicode, Verdana</FontFamily>
-    
+
     <DataTemplate x:Key="Button_WithoutButtons">
-        <Button Content="{Binding Name}" ToolTip="{Binding Description}" Command="{Binding ExecuteCommand}" />
+        <Button Content="{Binding Name}" ToolTip="{Binding Description}" Command="{Binding ExecuteCommand}" MinHeight="25" Margin="1.5"/>
     </DataTemplate>
+
     <DataTemplate x:Key="Button_WithButtons">
-        <Menu>
-            <MenuItem Header="{Binding Name}" ItemsSource="{Binding Buttons}" ToolTip="{Binding Description}" Command="{Binding ExecuteCommand}">
+        <Menu HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1" MinHeight="25" Margin="1.5"
+              FontSize="{DynamicResource UpperCaseContentFontSize}" FontFamily="{DynamicResource DefaultFont}" FontWeight="Bold">
+            <Menu.Template>
+                <ControlTemplate TargetType="{x:Type Menu}">
+                    <Grid IsItemsHost="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                </ControlTemplate>
+            </Menu.Template>
+
+            <MenuItem ItemsSource="{Binding Buttons}" ToolTip="{Binding Description}" Command="{Binding ExecuteCommand}">
+                <MenuItem.Header>
+                    <Grid Background="Transparent" Margin="3,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding Name, Converter={StaticResource ToUpperConverter}}" />
+                            <TextBlock Text="&#9660;" FontSize="7.5"
+                                       Margin="5,0,0,0" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Opacity" Value="0.2" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Menu}}}" Value="True">
+                                                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush2}" />
+                                                <Setter Property="Opacity" Value="1" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </MenuItem.Header>
+                <MenuItem.Template>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border Name="Border" Margin="0"
+                                    Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" 
+                                                                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                <Popup Name="Popup" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                   Placement="Bottom"
+                                                   IsOpen="{TemplateBinding IsSubmenuOpen}"
+                                                   AllowsTransparency="True" 
+                                                   Focusable="False"
+                                                   PopupAnimation="Fade">
+                                    <Border Name="SubmenuBorder" Background="{DynamicResource MenuItemBackgroundBrush}"
+                                                        SnapsToDevicePixels="True"
+                                                        BorderThickness="1" >
+                                        <StackPanel IsItemsHost="True"
+                                                                KeyboardNavigation.DirectionalNavigation="Cycle" />
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </MenuItem.Template>
+                <MenuItem.Style>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Setter Property="Background" Value="{DynamicResource GrayBrush10}" />
+                        <Setter Property="Opacity" Value="1.0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{DynamicResource ControlsDisabledBrush}" />
+                                <Setter Property="Opacity" Value="0.7" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource GrayBrush8}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource GrayBrush7}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
                 <MenuItem.ItemTemplate>
                     <DataTemplate>
                         <MenuItem Header="{Binding Name}" ItemsSource="{Binding Buttons}" ToolTip="{Binding Description}" Command="{Binding ExecuteCommand}"/>
@@ -23,6 +101,6 @@
             </MenuItem>
         </Menu>
     </DataTemplate>
-    
+
     <s:ButtonDataTemplateSelector x:Key="ButtonDataTemplateSelector" />
 </ResourceDictionary>
