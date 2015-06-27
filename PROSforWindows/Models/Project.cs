@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace PROSforWindows.Models
 {
     public class Project : INotifyPropertyChanged
     {
+        public static string executingDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
         string _output = "";
         public string Output
         {
             get { return _output; }
             set
             {
-                if (_output != value)
+                if (_output != value && 
+                    !(value == "\n\n\n" && _output == ""))
                 {
                     _output = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Output)));
@@ -50,6 +50,21 @@ namespace PROSforWindows.Models
                 }
             }
         }
+
+        bool _isExecuting = false;
+        public bool IsExecuting
+        {
+            get { return _isExecuting; }
+            set
+            {
+                if (_isExecuting != value)
+                {
+                    _isExecuting = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExecuting)));
+                }
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

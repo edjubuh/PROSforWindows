@@ -8,7 +8,7 @@
         xmlns:u="clr-namespace:PROSforWindows.Controls"
         mc:Ignorable="d" 
         Title="{Binding Path=Project.ProjectDirectory, Converter={StaticResource UriToNameConverter}, FallbackValue='PROS for Windows'}" TitleAlignment="Center"
-        Height="350" Width="525" MinWidth="400" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
+        Height="350" Width="525" MinHeight="300" MinWidth="400" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" 
         WindowTransitionsEnabled="False">
     <ma:MetroWindow.Resources>
         <ResourceDictionary>
@@ -41,7 +41,7 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="4">
+        <Grid Grid.Row="0" Margin="4,0,4,4" VerticalAlignment="Stretch">
             <Grid.Style>
                 <Style TargetType="{x:Type Grid}">
                     <Setter Property="Height" Value="100" />
@@ -60,20 +60,13 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            
+
             <!-- Buttons -->
             <!-- New Button -->
             <Button Content="{DynamicResource NewIcon}" Height="27">
@@ -97,7 +90,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            
+
             <!-- Open Button -->
             <Button Content="{DynamicResource OpenIcon}" Height="27" Command="{Binding OpenCommand}">
                 <Button.Style>
@@ -120,11 +113,11 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <!--
-            <WrapPanel>
-                <ItemsControl ItemsSource="{Binding Buttons}">
+
+            <WrapPanel Grid.Column="2" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ItemsControl ItemsSource="{Binding Buttons}" ItemTemplateSelector="{StaticResource ButtonDataTemplateSelector}">
                 </ItemsControl>
-            </WrapPanel>-->
+            </WrapPanel>
         </Grid>
 
         <!-- Console Output -->
@@ -139,7 +132,7 @@
                                 <Grid Background="{TemplateBinding Background}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
-                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="6" />
                                         <ColumnDefinition Width="14" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -195,18 +188,18 @@
                                     </Button>
 
                                     <!-- Vertical Scroll bar  -->
-                                    <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                    <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Grid.Row="1" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
 
                                     <!-- Horizontal Scroll bar  -->
-                                    <ScrollBar x:Name="PART_HorizontalScrollBar" VerticalAlignment="Bottom" Grid.Column="0" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" 
-                                   Grid.Row="4" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" />
+                                    <ScrollBar x:Name="PART_HorizontalScrollBar" VerticalAlignment="Bottom" Grid.Column="0" Grid.ColumnSpan="2" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" 
+                                   Grid.Row="3" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" />
 
                                     <!-- Content -->
                                     <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" 
                                                 CanContentScroll="{TemplateBinding CanContentScroll}"
                                                 CanHorizontallyScroll="False" CanVerticallyScroll="False"
                                                 Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"
-                                                Grid.RowSpan="4" />
+                                                Grid.RowSpan="2" />
                                 </Grid>
                             </ControlTemplate>
                         </ScrollViewer.Template>
@@ -214,11 +207,11 @@
                 </ControlTemplate>
             </TextBox.Template>
         </TextBox>
-        
+
         <!-- Status Bar -->
         <StackPanel Grid.Row="2" >
         </StackPanel>
-        
+
         <!-- Open project pane -->
         <Grid Grid.Row="0" Margin="0,70,0,0" Grid.RowSpan="2" Background="{StaticResource DarkGray}"
               Visibility="{Binding OpeningFolder, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">

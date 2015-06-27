@@ -17,8 +17,6 @@ namespace PROSforWindows.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private static string executingDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
         Project _project = new Project();
         public Project Project
         {
@@ -66,7 +64,7 @@ namespace PROSforWindows.ViewModels
 
                 Project.DirectoryPath = path;
                 // If there isn't a project settings file in the project, use the default one
-                string projectSettingsPath = File.Exists(Project.DirectoryPath + "\\settings.json") ? (Project.DirectoryPath + "\\settings.json") : (executingDirectory + "\\Resources\\defaultsettings.json");
+                string projectSettingsPath = File.Exists(Project.DirectoryPath + "\\settings.json") ? (Project.DirectoryPath + "\\settings.json") : (Project.executingDirectory + "\\Resources\\defaultsettings.json");
                 var projectSettings = JsonConvert.DeserializeObject<ProjectSettings>(
                     (new StreamReader(projectSettingsPath).ReadToEnd()),
                     new JsonSerializerSettings()
