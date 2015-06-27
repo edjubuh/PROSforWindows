@@ -7,7 +7,7 @@
         xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:u="clr-namespace:PROSforWindows.Controls"
         mc:Ignorable="d" 
-        Title="{Binding ProjectDirectory, Converter={StaticResource UriToNameConverter}, FallbackValue='PROS for Windows'}" TitleAlignment="Center"
+        Title="{Binding Path=Project.ProjectDirectory, Converter={StaticResource UriToNameConverter}, FallbackValue='PROS for Windows'}" TitleAlignment="Center"
         Height="350" Width="525" MinWidth="400" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
         WindowTransitionsEnabled="False">
     <ma:MetroWindow.Resources>
@@ -73,6 +73,9 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            
+            <!-- Buttons -->
+            <!-- New Button -->
             <Button Content="{DynamicResource NewIcon}" Height="27">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -94,6 +97,8 @@
                     </Style>
                 </Button.Style>
             </Button>
+            
+            <!-- Open Button -->
             <Button Content="{DynamicResource OpenIcon}" Height="27" Command="{Binding OpenCommand}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
@@ -115,10 +120,15 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <!--
+            <WrapPanel>
+                <ItemsControl ItemsSource="{Binding Buttons}">
+                </ItemsControl>
+            </WrapPanel>-->
         </Grid>
 
         <!-- Console Output -->
-        <TextBox Name="console" Text="{Binding ConsoleOutput}" Grid.Row="1" Grid.RowSpan="2" 
+        <TextBox Name="console" Text="{Binding Path=Project.Output}" Grid.Row="1" Grid.RowSpan="2" 
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="5"
                  FontFamily="Lucida Console" IsReadOnly="True" TextChanged="console_TextChanged">
             <TextBox.Template>
