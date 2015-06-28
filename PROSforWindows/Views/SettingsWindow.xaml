@@ -1,0 +1,49 @@
+﻿<ma:MetroWindow x:Class="PROSforWindows.Views.SettingsWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:local="clr-namespace:PROSforWindows.Views"
+                xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
+                mc:Ignorable="d"
+                Title="settings" TitleCaps="False" TitleAlignment="Center"
+                Height="400" Width="400" WindowStyle="ToolWindow">
+    <ma:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ma:MetroWindow.Resources>
+    <ma:MetroAnimatedTabControl>
+        <ma:MetroTabItem Header="{Binding Path=Project.DirectoryPath, Converter={StaticResource UriToNameConverter}, FallbackValue=Project}" IsEnabled="{Binding Path=Project.DirectoryPath, Converter={StaticResource StringToBooleanConverter}, FallbackValue=True}">
+            
+        </ma:MetroTabItem>
+        <ma:MetroTabItem Header="App">
+
+        </ma:MetroTabItem>
+        <ma:MetroTabItem Header="Updates">
+
+        </ma:MetroTabItem>
+        <ma:MetroTabItem Header="About">
+            <DockPanel Margin="5,0,5,5">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
+                    <TextBlock Text="PROS for Windows" FontSize="18" FontFamily="Myriad Pro" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Version, FallbackValue=v0.5.0.0, StringFormat='v{0}'}" FontSize="10" FontFamily="Myriad Pro" VerticalAlignment="Bottom" Margin="2,0,0,0"/>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="40,0,40,10">
+                    A lightweight compiler and interface for PROS projects and other non-IDE based coding projects.
+                </TextBlock>
+                <TextBlock Text="Acknowledgements:" FontSize="14" DockPanel.Dock="Top" />
+                <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap">
+                    This app was built by Elliot Berman. <LineBreak />
+                    <LineBreak />
+                    This app uses icons from <Hyperlink NavigateUri="http://icons8.com" RequestNavigate="Hyperlink_RequestNavigate">icons8.com</Hyperlink> under the Creative Commons Attribution-NoDerivs 3.0 Unported license.
+                </TextBlock>
+
+                <TextBlock DockPanel.Dock="Bottom">Copyright © 2015. Elliot Berman</TextBlock>
+                <Grid />
+            </DockPanel>
+        </ma:MetroTabItem>
+    </ma:MetroAnimatedTabControl>
+</ma:MetroWindow>

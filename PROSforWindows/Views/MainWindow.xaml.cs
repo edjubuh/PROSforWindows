@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using PROSforWindows.ViewModels;
 
 namespace PROSforWindows.Views
 {
@@ -10,6 +11,9 @@ namespace PROSforWindows.Views
         public MainWindow()
         {
             InitializeComponent();
+            var context = new MainViewModel();
+            context.ShowSettings += (s, e) => (new SettingsWindow(s)).ShowDialog();
+            DataContext = context;
         }
 
         private void console_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

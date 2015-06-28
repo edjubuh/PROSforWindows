@@ -3,4 +3,6 @@
                     xmlns:local="clr-namespace:PROSforWindows.Resources">
     <Image x:Key="NewIcon" Source="pack://application:,,,/Resources/img/Create New-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True" />
     <Image x:Key="OpenIcon" Source="pack://application:,,,/Resources/img/Opened Folder-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
+    <Image x:Key="SaveIcon" Source="pack://application:,,,/Resources/img/Save-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
+    <Image x:Key="EraseIcon" Source="pack://application:,,,/Resources/img/Erase-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
 </ResourceDictionary>

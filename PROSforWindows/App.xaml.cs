@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Navigation;
 
 namespace PROSforWindows
 {
@@ -18,9 +19,6 @@ namespace PROSforWindows
         protected override void OnStartup(StartupEventArgs e)
         {
             ThemeManager.AddAccent("PurdueAccent", new Uri("pack://application:,,,/Resources/PurdueAccent.xaml"));
-
-            Application.Current.MainWindow.DataContext = new MainViewModel();
-
             base.OnStartup(e);
         }
     }

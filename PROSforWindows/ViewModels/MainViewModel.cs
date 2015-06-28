@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows.Input;
 using System.Windows.Threading;
 using MahApps.Metro.Controls.Dialogs;
+using System;
 
 namespace PROSforWindows.ViewModels
 {
@@ -58,7 +59,7 @@ namespace PROSforWindows.ViewModels
                 if (_openingFolder != value)
                 {
                     _openingFolder = value;
-                    OnPropertyChanged(nameof(OpeningFolder));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OpeningFolder)));
                 }
             }
         }
@@ -100,6 +101,16 @@ namespace PROSforWindows.ViewModels
         }
         #endregion
 
+        #region Settings button members
+        public event EventHandler ShowSettings;
+
+        public ICommand SettingsCommand { get; set; }
+        void showSettings(object o)
+        {
+            ShowSettings?.Invoke(this, EventArgs.Empty);
+        }
+        #endregion
+
         #region Buttons
         public ObservableCollection<Button> Buttons { get; set; } = new ObservableCollection<Button>();
         #endregion
@@ -114,20 +125,14 @@ namespace PROSforWindows.ViewModels
             NewProjectCommand = new RelayCommand(newProject);
             OpenCommand = new RelayCommand(openButtonCommand);
             OpenFolderCommand = new RelayCommand(openFolderCommand);
+            SettingsCommand = new RelayCommand(showSettings);
             ClearConsoleCommand = new ListenRelayCommand(Dispatcher.CurrentDispatcher)
             {
                 Execute = clearConsole,
                 CanExecuteDelegate = (o) => !string.IsNullOrWhiteSpace(Project.Output)
             }.ListenOn(Project, t => t.Output);
         }
-
-        #region INotifyPropertyChanged members
+        
         public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
-        #endregion
     }
 }

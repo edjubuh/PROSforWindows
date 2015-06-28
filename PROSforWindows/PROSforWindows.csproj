@@ -68,6 +68,10 @@
     <Compile Include="Converters\StringToBooleanConverter.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />
     <Compile Include="Converters\UriToNameConverter.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\FolderPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +111,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MainWindowDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,7 +191,10 @@
   <ItemGroup>
     <Resource Include="Resources\img\Folder-26.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\img\Erase-100.png" />
+    <Resource Include="Resources\img\Save-100.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
