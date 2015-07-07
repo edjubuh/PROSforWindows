@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahApps.Metro.NET45", "MahA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{9A3E1BBA-DF5A-4BCE-AF89-47051BE8367A}"
 	ProjectSection(SolutionItems) = preProject
+		externalSource.json = externalSource.json
 		PROSforWindows\Resources\pros.json = PROSforWindows\Resources\pros.json
 		settings.json = settings.json
 	EndProjectSection

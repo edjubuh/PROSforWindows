@@ -21,7 +21,7 @@
   "installSources": {
     "type": "System.Collections.Generic.List`1[System.String]",
     "value": [
-      "https://raw.githubusercontent.com/edjubuh/PROSforWindows/master/PROSforWindows/misc/update.json"
+      "https://raw.githubusercontent.com/edjubuh/PROSforWindows/master/PROSforWindows/misc/extenalSource.json"
     ]
   }
 }

@@ -12,7 +12,12 @@ namespace PROSforWindows.Views
         {
             InitializeComponent();
             var context = new MainViewModel();
-            context.ShowSettings += (s, e) => (new SettingsWindow(s)).ShowDialog();
+            context.ShowSettings += (s, e) =>
+            {
+                var window = new SettingsWindow(s);
+                window.Owner = this;
+                window.ShowDialog();
+            };
             DataContext = context;
         }
 

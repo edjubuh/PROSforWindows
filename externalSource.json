@@ -1,0 +1,12 @@
+{
+  "name": "edjubuh Github",
+
+  "software": [
+    {
+      "key": "pros",
+      "version": "2b11",
+      "version-int": "11",
+      "download": "http://pros.url/path-to-2b11-files/update.bat"
+    }
+  ]
+}

@@ -7,7 +7,7 @@
                 xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
                 mc:Ignorable="d"
                 Title="settings" TitleCaps="False" TitleAlignment="Center"
-                Height="400" Width="400" WindowStyle="ToolWindow">
+                Height="400" Width="400" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
     <ma:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,7 +27,7 @@
                 <StackPanel.Resources>
                     <ResourceDictionary
                             xmlns:u ="clr-namespace:PROSforWindows.Models.Software">
-                        <CollectionViewSource x:Key="collection" Source="{Binding Path=Properties[installed], Source={x:Static Application.Current}}">
+                        <CollectionViewSource x:Key="collection" Source="{Binding InstalledSoftware}">
                             <CollectionViewSource.GroupDescriptions>
                                 <PropertyGroupDescription PropertyName="Category" />
                             </CollectionViewSource.GroupDescriptions>

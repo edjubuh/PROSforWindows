@@ -4,9 +4,6 @@ using System;
 using System.Windows;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using PROSforWindows.Models.Software;
-using System.Reflection;
 
 namespace PROSforWindows
 {

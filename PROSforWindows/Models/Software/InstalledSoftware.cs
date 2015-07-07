@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace PROSforWindows.Models.Software
 {
@@ -19,6 +14,6 @@ namespace PROSforWindows.Models.Software
 
         public string Category { get; set; }
 
-        public List<AvailableSoftware> AvailableUpdates { get; set; }
+        public ObservableCollection<AvailableSoftware> AvailableUpdates { get; set; }
     }
 }
