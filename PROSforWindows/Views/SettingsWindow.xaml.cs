@@ -22,5 +22,10 @@ namespace PROSforWindows.Views
         {
             System.Diagnostics.Process.Start(e.Uri.ToString());
         }
+
+        private void ItemsControl_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+
+        }
     }
 }

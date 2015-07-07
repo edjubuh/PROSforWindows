@@ -28,7 +28,8 @@ namespace PROSforWindows.ViewModels
         }
 
         public SettingsViewModel(object o)
-        {
+        { 
+            // Object o is the 
             var foo = o.GetType().GetProperties().Where(p => p.PropertyType.Equals(typeof(Project))).ToArray();
             // If o contains one Project property, set it as this project
             if (o.GetType().GetProperties().Where(p => p.PropertyType.Equals(typeof(Project))).Count() == 1)

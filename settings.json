@@ -1,0 +1,20 @@
+{
+  "installed": {
+    "type": "List<string>",
+    "value": [
+      {
+        "key": "prosforwindows",
+        "version": "0.4.5.0",
+        "version-int": 1
+      },
+      {
+        "key": "pros",
+        "version": "2b10",
+        "version-int": 10
+      }
+    ]
+  },
+    "installSources": [
+      "https://raw.githubusercontent.com/edjubuh/PROSforWindows/master/PROSforWindows/misc/update.json"
+    ]
+  }

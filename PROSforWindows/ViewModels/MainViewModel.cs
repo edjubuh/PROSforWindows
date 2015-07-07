@@ -71,7 +71,7 @@ namespace PROSforWindows.ViewModels
         }
 
         public ICommand OpenFolderCommand { get; set; }
-        void openFolderCommand(object o)
+        void openFolder(object o)
         {
             var path = (string)o;
             // The folder is a valid PROS project if there is the flashing utility or if there is a settings.json file
@@ -124,7 +124,7 @@ namespace PROSforWindows.ViewModels
         {
             NewProjectCommand = new RelayCommand(newProject);
             OpenCommand = new RelayCommand(openButtonCommand);
-            OpenFolderCommand = new RelayCommand(openFolderCommand);
+            OpenFolderCommand = new RelayCommand(openFolder);
             SettingsCommand = new RelayCommand(showSettings);
             ClearConsoleCommand = new ListenRelayCommand(Dispatcher.CurrentDispatcher)
             {

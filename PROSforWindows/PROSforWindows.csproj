@@ -68,6 +68,8 @@
     <Compile Include="Converters\StringToBooleanConverter.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />
     <Compile Include="Converters\UriToNameConverter.cs" />
+    <Compile Include="Models\Software\AvailableSoftware.cs" />
+    <Compile Include="Models\Software\InstalledSoftware.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -164,7 +166,10 @@
     <None Include="Resources\defaultsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\settingsschema.json" />
+    <None Include="Resources\pros.json" />
+    <Content Include="settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

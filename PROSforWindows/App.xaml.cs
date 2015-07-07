@@ -1,13 +1,12 @@
-﻿using MahApps.Metro;
-using PROSforWindows.ViewModels;
+﻿using Newtonsoft.Json;
+using MahApps.Metro;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Navigation;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using PROSforWindows.Models.Software;
+using System.Reflection;
 
 namespace PROSforWindows
 {
@@ -19,6 +18,25 @@ namespace PROSforWindows
         protected override void OnStartup(StartupEventArgs e)
         {
             ThemeManager.AddAccent("PurdueAccent", new Uri("pack://application:,,,/Resources/PurdueAccent.xaml"));
+            using (StreamReader reader = new StreamReader(App.GetContentStream(new Uri("/settings.json", UriKind.Relative)).Stream))
+            {
+                var _JObject = JObject.Parse(reader.ReadToEnd());
+
+                foreach (JProperty property in _JObject.Children())
+                {
+                    dynamic _prop = property.Value;
+
+                    try
+                    {
+                        Application.Current.Properties.Add(property.Name,
+                            JsonConvert.DeserializeObject(_prop.value.ToString(), Type.GetType((string)(_prop.type))));
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new Exception("There was an error reading the settings file.", ex);
+                    }
+                }
+            }
             base.OnStartup(e);
         }
     }

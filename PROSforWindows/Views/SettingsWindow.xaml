@@ -15,15 +15,46 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ma:MetroWindow.Resources>
-    <ma:MetroAnimatedTabControl>
+    <ma:MetroAnimatedTabControl Margin="5">
         <ma:MetroTabItem Header="{Binding Path=Project.DirectoryPath, Converter={StaticResource UriToNameConverter}, FallbackValue=Project}" IsEnabled="{Binding Path=Project.DirectoryPath, Converter={StaticResource StringToBooleanConverter}, FallbackValue=True}">
-            
+            <TextBlock Text="There's nothing here yet!" />            
         </ma:MetroTabItem>
         <ma:MetroTabItem Header="App">
-
+            <TextBlock Text="There's nothing here yet!" />
         </ma:MetroTabItem>
         <ma:MetroTabItem Header="Updates">
-
+            <StackPanel>
+                <StackPanel.Resources>
+                    <ResourceDictionary
+                            xmlns:u ="clr-namespace:PROSforWindows.Models.Software">
+                        <CollectionViewSource x:Key="collection" Source="{Binding Path=Properties[installed], Source={x:Static Application.Current}}">
+                            <CollectionViewSource.GroupDescriptions>
+                                <PropertyGroupDescription PropertyName="Category" />
+                            </CollectionViewSource.GroupDescriptions>
+                        </CollectionViewSource>
+                    </ResourceDictionary>
+                </StackPanel.Resources>
+                <ItemsControl ItemsSource="{Binding Source={StaticResource collection}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text=": version - " />
+                                <TextBlock Text="{Binding Version}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" FontSize="18" FontFamily="Segoe UI Semilight"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ItemsControl.GroupStyle>
+                </ItemsControl>
+            </StackPanel>
         </ma:MetroTabItem>
         <ma:MetroTabItem Header="About">
             <DockPanel Margin="5,0,5,5">
