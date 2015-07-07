@@ -68,6 +68,8 @@
     <Compile Include="Converters\StringToBooleanConverter.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />
     <Compile Include="Converters\UriToNameConverter.cs" />
+    <Compile Include="Helpers\LinqExtensions.cs" />
+    <Compile Include="Models\ObservableDictionary.cs" />
     <Compile Include="Models\Software\AvailableSoftware.cs" />
     <Compile Include="Models\Software\InstalledSoftware.cs" />
     <Compile Include="Models\Software\UpdateSource.cs" />
@@ -168,6 +170,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\pros.json" />
+    <Resource Include="Resources\img\GitHub-Mark-64px.png" />
+    <Resource Include="Resources\img\Icons8 Cup-50.png" />
     <Content Include="settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

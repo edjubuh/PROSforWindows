@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace PROSforWindows.Models.Software
 {
@@ -34,6 +35,12 @@ namespace PROSforWindows.Models.Software
         }
 
         public ObservableCollection<dynamic> Software { get; set; }
+
+        [OnDeserialized]
+        public void OnDeserialied(StreamingContext context)
+        {
+            Url = context.Context as string;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

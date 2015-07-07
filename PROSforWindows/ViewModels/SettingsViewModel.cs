@@ -1,4 +1,5 @@
-﻿using PROSforWindows.Models;
+﻿using Newtonsoft.Json;
+using PROSforWindows.Models;
 using PROSforWindows.Models.Software;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using PROSforWindows.Helpers;
 
 namespace PROSforWindows.ViewModels
 {
@@ -45,11 +47,28 @@ namespace PROSforWindows.ViewModels
             else throw new ArgumentException("Parameter must contain exactly one Project object");
 
             InstalledSoftware = new ObservableCollection<InstalledSoftware>((IEnumerable<InstalledSoftware>)App.Current.Properties["installed"]);
+            AvailableSoftware = new ObservableCollection<AvailableSoftware>();
+
             using (var client = new WebClient())
             {
-                foreach (string source in (IEnumerable<string>)App.Current.Properties["installSources"])
+                foreach (string url in (IEnumerable<string>)App.Current.Properties["installSources"])
                 {
-                    var donwloaded = client.DownloadString(source);
+                    var source = JsonConvert.DeserializeObject<UpdateSource>(client.DownloadString(url),
+                        new JsonSerializerSettings()
+                        {
+                            Context = new System.Runtime.Serialization.StreamingContext(System.Runtime.Serialization.StreamingContextStates.Other, url)
+                        });
+                    foreach (var software in source.Software)
+                    {
+                        if (InstalledSoftware.Any(s => s.Key == software.key.ToString()))
+                            InstalledSoftware.Where(s => s.Key == software.key.ToString()).ForEach(s =>
+                            {
+                                if (s.AvailableUpdates == null) s.AvailableUpdates = new ObservableCollection<AvailableSoftware>();
+                                s.AvailableUpdates.Add(JsonConvert.DeserializeObject<AvailableSoftware>(software.ToString()));
+                            });
+                        else
+                            AvailableSoftware.Add(JsonConvert.DeserializeObject<AvailableSoftware>(software.ToString()));
+                    }
                 }
             }
         }

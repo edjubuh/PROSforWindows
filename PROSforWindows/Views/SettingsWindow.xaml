@@ -17,7 +17,7 @@
     </ma:MetroWindow.Resources>
     <ma:MetroAnimatedTabControl Margin="5">
         <ma:MetroTabItem Header="{Binding Path=Project.DirectoryPath, Converter={StaticResource UriToNameConverter}, FallbackValue=Project}" IsEnabled="{Binding Path=Project.DirectoryPath, Converter={StaticResource StringToBooleanConverter}, FallbackValue=True}">
-            <TextBlock Text="There's nothing here yet!" />            
+            <TextBlock Text="There's nothing here yet!" />
         </ma:MetroTabItem>
         <ma:MetroTabItem Header="App">
             <TextBlock Text="There's nothing here yet!" />
@@ -69,9 +69,25 @@
                 <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap">
                     This app was built by Elliot Berman. <LineBreak />
                     <LineBreak />
-                    This app uses icons from <Hyperlink NavigateUri="http://icons8.com" RequestNavigate="Hyperlink_RequestNavigate">icons8.com</Hyperlink> under the Creative Commons Attribution-NoDerivs 3.0 Unported license.
                 </TextBlock>
-
+                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center">
+                    <Hyperlink NavigateUri="https://github.com/edjubuh/PROSforWindows" RequestNavigate="Hyperlink_RequestNavigate">
+                        <Hyperlink.Style>
+                            <Style TargetType="{x:Type Hyperlink}">
+                                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}"/>
+                            </Style>
+                        </Hyperlink.Style>
+                        <Image Source="pack://application:,,,/Resources/img/GitHub-Mark-64px.png" Height="20" />
+                    </Hyperlink> 
+                    <Hyperlink NavigateUri="https://icons8.com" RequestNavigate="Hyperlink_RequestNavigate">
+                        <Hyperlink.Style>
+                            <Style TargetType="{x:Type Hyperlink}">
+                                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}"/>
+                            </Style>
+                        </Hyperlink.Style>
+                        <Image Source="pack://application:,,,/Resources/img/Icons8 Cup-50.png" Height="20" />
+                    </Hyperlink>
+                </TextBlock>
                 <TextBlock DockPanel.Dock="Bottom">Copyright © 2015. Elliot Berman</TextBlock>
                 <Grid />
             </DockPanel>

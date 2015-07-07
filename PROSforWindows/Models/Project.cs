@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 
 namespace PROSforWindows.Models
@@ -37,8 +36,8 @@ namespace PROSforWindows.Models
             }
         }
 
-        Dictionary<string, string> _parameters = new Dictionary<string, string>();
-        public Dictionary<string, string> Parameters
+        ObservableDictionary<string, string> _parameters = new ObservableDictionary<string, string>();
+        public ObservableDictionary<string, string> Parameters
         {
             get { return _parameters; }
             set

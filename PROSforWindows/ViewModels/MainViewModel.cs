@@ -111,6 +111,20 @@ namespace PROSforWindows.ViewModels
         }
         #endregion
 
+        #region Parameters button members
+        public ICommand ClearParametersCommand { get; set; }
+        void clearParameters(object o)
+        {
+            Project.Parameters.Clear();
+        }
+
+        public ICommand SaveParametersCommand { get; set; }
+        void saveParameters(object o)
+        {
+            
+        }
+        #endregion
+
         #region Buttons
         public ObservableCollection<Button> Buttons { get; set; } = new ObservableCollection<Button>();
         #endregion
@@ -125,12 +139,26 @@ namespace PROSforWindows.ViewModels
             NewProjectCommand = new RelayCommand(newProject);
             OpenCommand = new RelayCommand(openButtonCommand);
             OpenFolderCommand = new RelayCommand(openFolder);
+
             SettingsCommand = new RelayCommand(showSettings);
+
             ClearConsoleCommand = new ListenRelayCommand(Dispatcher.CurrentDispatcher)
             {
                 Execute = clearConsole,
                 CanExecuteDelegate = (o) => !string.IsNullOrWhiteSpace(Project.Output)
             }.ListenOn(Project, t => t.Output);
+
+            ClearParametersCommand = new ListenRelayCommand(Dispatcher.CurrentDispatcher)
+            {
+                Execute = clearParameters,
+                CanExecuteDelegate = (o) => Project.Parameters.Count > 0
+            }.ListenOn(Project, p => p.Parameters);
+
+            SaveParametersCommand = new ListenRelayCommand(Dispatcher.CurrentDispatcher)
+            {
+                Execute = saveParameters,
+                CanExecuteDelegate = (o) => Project.Parameters.Count > 0
+            }.ListenOn(Project, p => p.Parameters);
         }
         
         public event PropertyChangedEventHandler PropertyChanged;
