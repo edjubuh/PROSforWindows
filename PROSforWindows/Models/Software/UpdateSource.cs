@@ -34,7 +34,7 @@ namespace PROSforWindows.Models.Software
             }
         }
 
-        public ObservableCollection<dynamic> Software { get; set; }
+        public ObservableCollection<AvailableSoftware> Software { get; set; }
 
         [OnDeserialized]
         public void OnDeserialied(StreamingContext context)

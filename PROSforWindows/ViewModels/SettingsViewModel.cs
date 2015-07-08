@@ -9,6 +9,9 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using PROSforWindows.Helpers;
+using System.Windows.Input;
+using PROSforWindows.Commands;
+using System.Threading.Tasks;
 
 namespace PROSforWindows.ViewModels
 {
@@ -34,7 +37,7 @@ namespace PROSforWindows.ViewModels
         }
 
         public ObservableCollection<InstalledSoftware> InstalledSoftware { get; set; }
-        public ObservableCollection<AvailableSoftware> AvailableSoftware { get; set; }
+        public ObservableCollection<UpdateSource> UpdateSources { get; set; }
 
         public SettingsViewModel(object o)
         {
@@ -47,30 +50,54 @@ namespace PROSforWindows.ViewModels
             else throw new ArgumentException("Parameter must contain exactly one Project object");
 
             InstalledSoftware = new ObservableCollection<InstalledSoftware>((IEnumerable<InstalledSoftware>)App.Current.Properties["installed"]);
-            AvailableSoftware = new ObservableCollection<AvailableSoftware>();
+            UpdateSources = new ObservableCollection<UpdateSource>();
 
+            HyperlinkCommand = new RelayCommand(openHyperlink);
+
+            FetchAllAvailableSoftware();
+        }
+
+        public async void FetchAllAvailableSoftware()
+        {
+            using (var client = new WebClient())
+                foreach (string url in (IEnumerable<string>)App.Current.Properties["installSources"])
+                    await FetchAvailableSoftware(url, client);
+        }
+
+        public async Task FetchAvailableSoftware(string url)
+        {
             using (var client = new WebClient())
             {
-                foreach (string url in (IEnumerable<string>)App.Current.Properties["installSources"])
-                {
-                    var source = JsonConvert.DeserializeObject<UpdateSource>(client.DownloadString(url),
-                        new JsonSerializerSettings()
-                        {
-                            Context = new System.Runtime.Serialization.StreamingContext(System.Runtime.Serialization.StreamingContextStates.Other, url)
-                        });
-                    foreach (var software in source.Software)
-                    {
-                        if (InstalledSoftware.Any(s => s.Key == software.key.ToString()))
-                            InstalledSoftware.Where(s => s.Key == software.key.ToString()).ForEach(s =>
-                            {
-                                if (s.AvailableUpdates == null) s.AvailableUpdates = new ObservableCollection<AvailableSoftware>();
-                                s.AvailableUpdates.Add(JsonConvert.DeserializeObject<AvailableSoftware>(software.ToString()));
-                            });
-                        else
-                            AvailableSoftware.Add(JsonConvert.DeserializeObject<AvailableSoftware>(software.ToString()));
-                    }
-                }
+                await FetchAvailableSoftware(url, client);
             }
+        }
+
+        public async Task FetchAvailableSoftware(string url, WebClient client)
+        {
+            var source = await Task.Factory.StartNew(() =>
+                JsonConvert.DeserializeObject<UpdateSource>(client.DownloadString(url),
+                            new JsonSerializerSettings()
+                            {
+                                Context = new System.Runtime.Serialization.StreamingContext(System.Runtime.Serialization.StreamingContextStates.Other, url)
+                            }
+                        )
+                );
+            foreach (var software in source.Software)
+            {
+                software.UpdateSource = source.Url;
+                if (InstalledSoftware.Any(s => s.Key == software.Key.ToString()))
+                    InstalledSoftware.Where(s => s.Key == software.Key.ToString()).ForEach(async (s) =>
+                    {
+                        if (s.AvailableUpdates == null) s.AvailableUpdates = new ObservableCollection<AvailableSoftware>();
+                        s.AvailableUpdates.Add(await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<AvailableSoftware>(software.ToString())));
+                    });
+            }
+        }
+
+        public ICommand HyperlinkCommand { get; set; }
+        void openHyperlink(object o)
+        {
+            System.Diagnostics.Process.Start(o as string);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

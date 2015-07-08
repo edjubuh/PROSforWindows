@@ -7,12 +7,16 @@
                 xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
                 mc:Ignorable="d"
                 Title="settings" TitleCaps="False" TitleAlignment="Center"
+                ResizeMode="NoResize"
                 Height="400" Width="400" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
     <ma:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Image x:Key="GitHubIcon" Source="pack://application:,,,/Resources/img/GitHub-Mark-64px.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
+            <Image x:Key="Icons8Icon" Source="pack://application:,,,/Resources/img/Icons8 Cup-50.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
         </ResourceDictionary>
     </ma:MetroWindow.Resources>
     <ma:MetroAnimatedTabControl Margin="5">
@@ -41,6 +45,16 @@
                                 <TextBlock Text="{Binding Name}" />
                                 <TextBlock Text=": version - " />
                                 <TextBlock Text="{Binding Version}" />
+                                <TextBlock Text=" (" FontStyle="Italic" />
+                                <ItemsControl ItemsSource="{Binding AvailableUpdates}" FontStyle="Italic">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Update available from: " FontStyle="Italic" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -70,24 +84,51 @@
                     This app was built by Elliot Berman. <LineBreak />
                     <LineBreak />
                 </TextBlock>
-                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center">
-                    <Hyperlink NavigateUri="https://github.com/edjubuh/PROSforWindows" RequestNavigate="Hyperlink_RequestNavigate">
-                        <Hyperlink.Style>
-                            <Style TargetType="{x:Type Hyperlink}">
-                                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}"/>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" MaxHeight="{TemplateBinding MaxHeight}" MaxWidth="{TemplateBinding MaxWidth}">
+                                                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                    <Rectangle.Style>
+                                                        <Style TargetType="Rectangle">
+                                                            <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}" Value="True">
+                                                                    <Setter Property="Fill" Value="{DynamicResource AccentColorBrush3}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}" Value="True">
+                                                                    <Setter Property="Fill" Value="{DynamicResource AccentColorBrush4}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled}" Value="False">
+                                                                    <Setter Property="Opacity" Value="0.25" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Rectangle.Style>
+                                                    <Rectangle.OpacityMask>
+                                                        <VisualBrush>
+                                                            <VisualBrush.Visual>
+                                                                <ContentPresenter Content="{TemplateBinding Content}" />
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </Rectangle.OpacityMask>
+                                                </Rectangle>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
-                        </Hyperlink.Style>
-                        <Image Source="pack://application:,,,/Resources/img/GitHub-Mark-64px.png" Height="20" />
-                    </Hyperlink> 
-                    <Hyperlink NavigateUri="https://icons8.com" RequestNavigate="Hyperlink_RequestNavigate">
-                        <Hyperlink.Style>
-                            <Style TargetType="{x:Type Hyperlink}">
-                                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}"/>
-                            </Style>
-                        </Hyperlink.Style>
-                        <Image Source="pack://application:,,,/Resources/img/Icons8 Cup-50.png" Height="20" />
-                    </Hyperlink>
-                </TextBlock>
+                        </ResourceDictionary>
+                    </StackPanel.Resources>
+                    <Button Content="{DynamicResource Icons8Icon}" Command="{Binding HyperlinkCommand}" CommandParameter="https://icons8.com" 
+                        Width="30" Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}" VerticalAlignment="Center"/>
+                    <Button Content="{DynamicResource GitHubIcon}" Command="{Binding HyperlinkCommand}" CommandParameter="https://github.com/edjubuh/PROSforWindows" 
+                        Width="27" Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}" VerticalAlignment="Center"/>
+                </StackPanel>
                 <TextBlock DockPanel.Dock="Bottom">Copyright © 2015. Elliot Berman</TextBlock>
                 <Grid />
             </DockPanel>
