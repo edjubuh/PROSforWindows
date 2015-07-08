@@ -4,8 +4,9 @@
   "software": [
     {
       "key": "pros",
+      "name": "PROS",
       "version": "2b11",
-      "version-int": "11",
+      "versionInteger": "11",
       "download": "http://pros.url/path-to-2b11-files/update.bat"
     }
   ]
