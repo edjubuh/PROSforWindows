@@ -12,6 +12,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Image x:Key="GitHubIcon" Source="pack://application:,,,/Resources/img/GitHub-Mark-64px.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
@@ -26,46 +27,52 @@
             <TextBlock Text="There's nothing here yet!" />
         </ma:MetroTabItem>
         <ma:MetroTabItem Header="Updates">
-            <StackPanel>
-                <!-- Installed software items -->
-                <ItemsControl ItemsSource="{Binding InstalledSoftware}" >
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <WrapPanel Orientation="Horizontal">
-                                <TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <Expander IsExpanded="True">
+                        <Expander.Header>
+                            <TextBlock Text="Installed" FontFamily="Segoe UI Semilight" FontSize="18" Foreground="White" />
+                        </Expander.Header>
+                        <!-- Installed software items -->
+                        <ItemsControl ItemsSource="{Binding InstalledSoftware}" >
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock>
                                     <!-- Basic information about currently installed (from settings.json) -->
                                     <Run Text="{Binding Path=Name, StringFormat={}{0}: }" />
                                     <Run Text="{Binding Path=Version, StringFormat=[{0}]}"/>
-                                </TextBlock>
-                                <!-- Displays available updates -->
-                                <WrapPanel Orientation="Horizontal" Visibility="{Binding Path=AvailableUpdates, Converter={StaticResource CollectionToVisibilityConverter}}">
-                                    <TextBlock Text=" (Update available from:" FontStyle="Italic">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Text" Value=" (Update available from: " />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=AvailableUpdates.Count, Converter={StaticResource CutoffConverter}, ConverterParameter=1}" Value="True">
-                                                        <Setter Property="Text" Value=" (Updates available from: " />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <ItemsControl ItemsSource="{Binding AvailableUpdates}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock FontStyle="Italic">
+                                        </TextBlock>
+                                        <!-- Displays available updates -->
+                                        <WrapPanel Orientation="Horizontal" Visibility="{Binding Path=AvailableUpdates, Converter={StaticResource CollectionToVisibilityConverter}}">
+                                            <TextBlock Text=" (Update available from:" FontStyle="Italic">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Text" Value=" (Update available from: " />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=AvailableUpdates.Count, Converter={StaticResource CutoffConverter}, ConverterParameter=1}" Value="True">
+                                                                <Setter Property="Text" Value=" (Updates available from: " />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <ItemsControl ItemsSource="{Binding AvailableUpdates}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock FontStyle="Italic">
                                                     <Run Text=" " />
                                                     <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.DownloadSoftwareCommand}" CommandParameter="{Binding}">
                                                         <Run Text="{Binding UpdateName}" />
                                                     </Hyperlink>
                                                     <Run Text="{Binding Version, StringFormat= [{0}]}" />
                                                     <Run>
+                                                        <!-- lol all this code to remove comma if element is last element -->
                                                         <Run.Style>
                                                             <Style TargetType="{x:Type Run}">
                                                                 <Setter Property="Text" Value="," />
@@ -84,26 +91,76 @@
                                                             </Style>
                                                         </Run.Style>
                                                     </Run>
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                    <TextBlock Text=")" VerticalAlignment="Bottom" />
-                                </WrapPanel>
-                            </WrapPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" FontSize="18" FontFamily="Segoe UI Semilight"/>
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <TextBlock Text=")" VerticalAlignment="Bottom" />
+                                        </WrapPanel>
+                                    </WrapPanel>
                                 </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ItemsControl.GroupStyle>
-                </ItemsControl>
-            </StackPanel>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                    <Expander IsExpanded="True">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Online Sources" FontFamily="Segoe UI Semilight" FontSize="18" Foreground="White" />
+                                <Button Grid.Column="1" HorizontalAlignment="Right" Width="25" Height="25" Content="{StaticResource AddListIcon}"
+                                        Style="{DynamicResource SimpleHoverButton}" Foreground="White"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ItemsControl ItemsSource="{Binding UpdateSources}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" VerticalAlignment="Center"/>
+                                            <Button Style="{DynamicResource SimpleHoverButton}" Content="{StaticResource DeleteIcon}" Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=Height}"
+                                                    Foreground="Black" DockPanel.Dock="Right"/>
+                                            <Button Style="{DynamicResource SimpleHoverButton}" Content="{StaticResource RefreshIcon}" Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=Height}"
+                                                    Foreground="Black" DockPanel.Dock="Right"/>
+                                            <Button Style="{DynamicResource SimpleHoverButton}" Content="{StaticResource CopyIcon}" Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=Height}"
+                                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.CopyToClipboardCommand}"
+                                                    CommandParameter="{Binding Url}" ToolTip="Copy source to clipboard"
+                                                    Foreground="Black" DockPanel.Dock="Right"/>
+                                            <Grid />
+                                        </DockPanel>
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource AccentColorBrush2}">
+                                            <TextBlock Text="Available Software" FontStyle="Italic" HorizontalAlignment="Center" />
+                                        </Border>
+                                        <ItemsControl ItemsSource="{Binding Software}" >
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid >
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                                                        <TextBlock Grid.Column="1" Text="{Binding Version, StringFormat=v. {0}}" HorizontalAlignment="Center" />
+                                                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                                            <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.HyperlinkCommand}"
+                                                                       CommandParameter="{Binding DownloadUrl}">
+                                                                Download
+                                                            </Hyperlink>
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
         </ma:MetroTabItem>
         <ma:MetroTabItem Header="About">
             <DockPanel Margin="5,0,5,5">
@@ -120,48 +177,11 @@
                     <LineBreak />
                 </TextBlock>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <StackPanel.Resources>
-                        <ResourceDictionary>
-                            <Style TargetType="Button">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Grid Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" MaxHeight="{TemplateBinding MaxHeight}" MaxWidth="{TemplateBinding MaxWidth}">
-                                                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                    <Rectangle.Style>
-                                                        <Style TargetType="Rectangle">
-                                                            <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}" Value="True">
-                                                                    <Setter Property="Fill" Value="{DynamicResource AccentColorBrush3}" />
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}" Value="True">
-                                                                    <Setter Property="Fill" Value="{DynamicResource AccentColorBrush4}" />
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled}" Value="False">
-                                                                    <Setter Property="Opacity" Value="0.25" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Rectangle.Style>
-                                                    <Rectangle.OpacityMask>
-                                                        <VisualBrush>
-                                                            <VisualBrush.Visual>
-                                                                <ContentPresenter Content="{TemplateBinding Content}" />
-                                                            </VisualBrush.Visual>
-                                                        </VisualBrush>
-                                                    </Rectangle.OpacityMask>
-                                                </Rectangle>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ResourceDictionary>
-                    </StackPanel.Resources>
                     <Button Content="{DynamicResource Icons8Icon}" Command="{Binding HyperlinkCommand}" CommandParameter="https://icons8.com" 
-                        Width="30" Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}" VerticalAlignment="Center"/>
+                            Style="{DynamicResource SimpleHoverButton}"
+                            Width="30" Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}" VerticalAlignment="Center"/>
                     <Button Content="{DynamicResource GitHubIcon}" Command="{Binding HyperlinkCommand}" CommandParameter="https://github.com/edjubuh/PROSforWindows" 
+                            Style="{DynamicResource SimpleHoverButton}"
                         Width="27" Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}" VerticalAlignment="Center"/>
                 </StackPanel>
                 <TextBlock DockPanel.Dock="Bottom">Copyright © 2015. Elliot Berman</TextBlock>

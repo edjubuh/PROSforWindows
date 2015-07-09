@@ -29,6 +29,42 @@
             <c:ObjectNotNullConverter x:Key="ObjectNotNullConverter" />
             <c:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter" />
             <c:ItemIsLastConverter x:Key="ItemIsLastConverter" />
+
+            <Style TargetType="Button" x:Key="SimpleHoverButton">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" MaxHeight="{TemplateBinding MaxHeight}" MaxWidth="{TemplateBinding MaxWidth}">
+                                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource AccentColorBrush3}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource AccentColorBrush4}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled}" Value="False">
+                                                    <Setter Property="Opacity" Value="0.25" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush>
+                                            <VisualBrush.Visual>
+                                                <ContentPresenter Content="{TemplateBinding Content}" />
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

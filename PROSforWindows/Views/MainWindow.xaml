@@ -52,13 +52,13 @@
             <!-- Buttons -->
             <!-- New Button -->
             <Button Content="{DynamicResource NewIcon}" Command="{Binding NewProjectCommand}" Height="27" Width="27"
-                    ToolTip="Create a new project"
+                    ToolTip="Create a new project" Style="{DynamicResource SimpleHoverButton}"
                     Grid.Row="0" Grid.Column="0" Margin="0,0,1.5,1.5"/>
 
             <!-- Open Button -->
             <ToggleButton Content="{DynamicResource OpenIcon}" Height="27" Width="27"
                     IsChecked="{Binding OpeningFolder}"
-                    ToolTip="Open an existing PROS project"
+                    ToolTip="Open an existing PROS project" 
                     Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,1.5,1.5,0"/>
             
             <!-- Custom buttons --> 
@@ -82,12 +82,12 @@
 
             <!-- Save Parameters Button -->
             <Button Content="{DynamicResource SaveIcon}" Height="27" Width="27" Command="{Binding SaveParametersCommand}"
-                    ToolTip="Store saved parameters with your project"
+                    ToolTip="Store saved parameters with your project" Style="{DynamicResource SimpleHoverButton}"
                     Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Margin="1.5,0,0,1.5"/>
             
             <!-- Clear Parameters Button -->
             <Button Content="{DynamicResource EraseIcon}" Height="27" Width="27" Command="{Binding ClearParametersCommand}"
-                    ToolTip="Erase saved parameters and cached parameters"
+                    ToolTip="Erase saved parameters and cached parameters" Style="{DynamicResource SimpleHoverButton}"
                     Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Margin="1.5,1.5,0,0"/>
         </Grid>
 

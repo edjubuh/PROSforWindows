@@ -5,4 +5,8 @@
     <Image x:Key="OpenIcon" Source="pack://application:,,,/Resources/img/Opened Folder-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
     <Image x:Key="SaveIcon" Source="pack://application:,,,/Resources/img/Save-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
     <Image x:Key="EraseIcon" Source="pack://application:,,,/Resources/img/Erase-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
+    <Image x:Key="RefreshIcon" Source="pack://application:,,,/Resources/img/Refresh-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
+    <Image x:Key="DeleteIcon" Source="pack://application:,,,/Resources/img/Delete-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
+    <Image x:Key="AddListIcon" Source="pack://application:,,,/Resources/img/Add List-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
+    <Image x:Key="CopyIcon" Source="pack://application:,,,/Resources/img/Copy-100.png" RenderOptions.BitmapScalingMode="HighQuality" UseLayoutRounding="True"/>
 </ResourceDictionary>

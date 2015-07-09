@@ -9,6 +9,8 @@ namespace PROSforWindows.Models.Software
 
         public string Name { get; set; }
 
+        public string AboutUrl { get; set; }
+
         public string Version { get; set; }
 
         public int VersionInteger { get; set; }

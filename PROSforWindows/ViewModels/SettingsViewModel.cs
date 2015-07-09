@@ -12,6 +12,7 @@ using PROSforWindows.Helpers;
 using System.Windows.Input;
 using PROSforWindows.Commands;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PROSforWindows.ViewModels
 {
@@ -54,6 +55,7 @@ namespace PROSforWindows.ViewModels
 
             HyperlinkCommand = new RelayCommand(openHyperlink);
             DownloadSoftwareCommand = new RelayCommand(downloadSoftware);
+            CopyToClipboardCommand = new RelayCommand(copyToClipboard);
 
             FetchAllAvailableSoftware();
         }
@@ -95,7 +97,7 @@ namespace PROSforWindows.ViewModels
                         if (installed.AvailableUpdates == null) installed.AvailableUpdates = new ObservableCollection<AvailableSoftware>();
 
                         // Make sure the software update isn't already in its available updates
-                        if(!installed.AvailableUpdates.Contains(available, new AvailableSoftwareComparer()))
+                        if (!installed.AvailableUpdates.Contains(available, new AvailableSoftwareComparer()))
                             installed.AvailableUpdates.Add(available);
 
                         remove.Add(available);
@@ -104,6 +106,8 @@ namespace PROSforWindows.ViewModels
 
             foreach (var available in remove)
                 source.Software.Remove(available);
+
+            UpdateSources.Add(source);
         }
 
         public ICommand HyperlinkCommand { get; set; }
@@ -115,7 +119,14 @@ namespace PROSforWindows.ViewModels
         public ICommand DownloadSoftwareCommand { get; set; }
         void downloadSoftware(object o)
         {
+            
+        }
 
+        public ICommand CopyToClipboardCommand { get; set; }
+        void copyToClipboard(object o)
+        {
+            if (o is string)
+                Clipboard.SetText(o as string);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
