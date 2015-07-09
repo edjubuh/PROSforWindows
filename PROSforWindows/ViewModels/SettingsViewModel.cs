@@ -13,6 +13,7 @@ using System.Windows.Input;
 using PROSforWindows.Commands;
 using System.Threading.Tasks;
 using System.Windows;
+using PROSforWindows.Properties;
 
 namespace PROSforWindows.ViewModels
 {

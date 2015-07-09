@@ -6,6 +6,7 @@
                 xmlns:local="clr-namespace:PROSforWindows.Views"
                 xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
                 xmlns:u="clr-namespace:PROSforWindows.Controls"
+                xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                 mc:Ignorable="d" d:DataContext="MainViewModel"
                 BorderThickness="0"
                 Title="{Binding Path=Project.DirectoryPath, Converter={StaticResource UriToNameConverter}, FallbackValue='PROS for Windows'}" TitleAlignment="Center"
@@ -60,8 +61,8 @@
                     IsChecked="{Binding OpeningFolder}"
                     ToolTip="Open an existing PROS project" 
                     Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,1.5,1.5,0"/>
-            
-            <!-- Custom buttons --> 
+
+            <!-- Custom buttons -->
             <ItemsControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Background="{x:Null}" BorderBrush="{x:Null}"
                           HorizontalAlignment="Center"
                           ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderThickness="0"
@@ -72,7 +73,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            
+
             <!-- Parameters text -->
             <TextBlock Text="parameters" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" VerticalAlignment="Center" Margin="1.5" Foreground="White" Opacity="0.5">
                 <TextBlock.LayoutTransform>
@@ -84,7 +85,7 @@
             <Button Content="{DynamicResource SaveIcon}" Height="27" Width="27" Command="{Binding SaveParametersCommand}"
                     ToolTip="Store saved parameters with your project" Style="{DynamicResource SimpleHoverButton}"
                     Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Margin="1.5,0,0,1.5"/>
-            
+
             <!-- Clear Parameters Button -->
             <Button Content="{DynamicResource EraseIcon}" Height="27" Width="27" Command="{Binding ClearParametersCommand}"
                     ToolTip="Erase saved parameters and cached parameters" Style="{DynamicResource SimpleHoverButton}"
@@ -206,7 +207,52 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Text="Recent Projects" FontSize="16" Foreground="White" Grid.Row="0" Grid.Column="0" Margin="5"/>
-            <ListView Grid.Row="1" Grid.Column="0" Margin="0,5" />
+            <ItemsControl Grid.Row="1" Grid.Column="0" Margin="0,5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                          ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.RecentFolders}" >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button HorizontalAlignment="Stretch" Content="{Binding Converter={StaticResource UriToNameConverter}}" ToolTip="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.Project.DirectoryPath}" 
+                                Height="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="4,0,0,0">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.OpenFolderCommand}" CommandParameter="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.Project.DirectoryPath}" >
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Clicked">
+                                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.OpenFolderCommand}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                            <Button.Template>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="{x:Null}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush4}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <TextBlock Text="Open Project" FontSize="16" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="5"/>
             <u:FolderPicker Grid.Column="1" Grid.Row="1" Margin="0,5" SelectButtonText="Open" SelectCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.OpenFolderCommand}" SelectedFolder="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.SelectedFolder}"/>
         </Grid>

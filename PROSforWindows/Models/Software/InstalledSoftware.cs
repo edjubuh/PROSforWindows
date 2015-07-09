@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Configuration;
 
 namespace PROSforWindows.Models.Software
 {
@@ -16,5 +18,10 @@ namespace PROSforWindows.Models.Software
 
         [JsonIgnore]
         public AvailableSoftware AvailableUpdate { get; set; }
+
+        public static InstalledSoftware CreateDefaults()
+        {
+            return new InstalledSoftware();
+        }
     }
 }

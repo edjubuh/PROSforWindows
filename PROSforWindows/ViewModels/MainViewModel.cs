@@ -9,6 +9,10 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using PROSforWindows.Properties;
+using System.Collections.Specialized;
 
 namespace PROSforWindows.ViewModels
 {
@@ -64,6 +68,11 @@ namespace PROSforWindows.ViewModels
             }
         }
 
+        public StringCollection RecentFolders
+        {
+            get { return Settings.Default.RecentFolders; }
+        }
+
         public ICommand OpenCommand { get; set; }
         void openButtonCommand(object o)
         {
@@ -95,9 +104,22 @@ namespace PROSforWindows.ViewModels
                 foreach (var b in projectSettings.Buttons)
                     Buttons.Add(b);
 
+                if (Settings.Default.RecentFolders == null) Settings.Default.RecentFolders = new StringCollection();
+                if(!Settings.Default.RecentFolders.Contains(Project.DirectoryPath)) Settings.Default.RecentFolders.Add(Project.DirectoryPath);
+                Settings.Default.Save();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RecentFolders)));
+
                 OpeningFolder = false;
                 Project.Output = "> Opened project: " + Project.DirectoryPath;
             }
+        }
+
+        public ICommand RemoveRecentFolderCommand { get; set; }
+        void removeRecentFolder(object o)
+        {
+            if (Settings.Default.RecentFolders.Contains(o as string))
+                Settings.Default.RecentFolders.Remove(o as string);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RecentFolders)));
         }
         #endregion
 
@@ -121,7 +143,7 @@ namespace PROSforWindows.ViewModels
         public ICommand SaveParametersCommand { get; set; }
         void saveParameters(object o)
         {
-            
+
         }
         #endregion
 
@@ -139,6 +161,7 @@ namespace PROSforWindows.ViewModels
             NewProjectCommand = new RelayCommand(newProject);
             OpenCommand = new RelayCommand(openButtonCommand);
             OpenFolderCommand = new RelayCommand(openFolder);
+            RemoveRecentFolderCommand = new RelayCommand(removeRecentFolder);
 
             SettingsCommand = new RelayCommand(showSettings);
 
@@ -160,7 +183,7 @@ namespace PROSforWindows.ViewModels
                 CanExecuteDelegate = (o) => Project.Parameters.Count > 0
             }.ListenOn(Project, p => p.Parameters);
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }
