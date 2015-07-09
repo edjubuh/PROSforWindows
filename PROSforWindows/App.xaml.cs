@@ -4,6 +4,9 @@ using System;
 using System.Windows;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Reflection;
+using Newtonsoft.Json.Serialization;
 
 namespace PROSforWindows
 {
@@ -28,13 +31,34 @@ namespace PROSforWindows
                         Application.Current.Properties.Add(property.Name,
                             JsonConvert.DeserializeObject(_prop.value.ToString(), Type.GetType((string)(_prop.type))));
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         throw new Exception("There was an error reading the settings file.", ex);
                     }
                 }
             }
             base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            JObject obj = new JObject();
+            foreach (DictionaryEntry property in Application.Current.Properties)
+            {
+                var _prop = new JObject();
+                _prop.Add("type", new JValue(property.Value.GetType().ToString()));
+                _prop.Add("value", JContainer.FromObject(property.Value, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+
+                obj.Add(property.Key as string, _prop);
+            }
+
+
+            using (var writer = new StreamWriter(new FileStream(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/settings.json", FileMode.Create)))
+            {
+                writer.Write(obj.ToString(Formatting.Indented));
+            }
+
+            base.OnExit(e);
         }
     }
 }

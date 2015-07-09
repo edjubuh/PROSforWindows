@@ -51,27 +51,33 @@ namespace PROSforWindows.Controls
             get { return (string)GetValue(SelectedFolderProperty); }
             set { SetValue(SelectedFolderProperty, value); }
         }
-        
+
         public ObservableCollection<Folder> Items { get; set; } = new ObservableCollection<Folder>();
 
         public FolderPicker()
         {
             DataContext = this;
+
+            // Add shortcuts from %userprofile%\Links
             foreach (string path in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Links").Where(p => p.EndsWith(".lnk")))
             {
                 Shell32.ShellLinkObject link = (Shell32.ShellLinkObject)((new Shell()).
                     NameSpace(System.IO.Path.GetDirectoryName(path)).
                     ParseName(System.IO.Path.GetFileName(path)).
                     GetLink);
-                if(!string.IsNullOrEmpty(link.Path)) Items.Add((new Folder(link.Path)).LoadChildren(null, new RoutedEventArgs()));
+                if (!string.IsNullOrEmpty(link.Path) && File.GetAttributes(link.Path).HasFlag(FileAttributes.Directory)) Items.Add((new Folder(link.Path)).LoadChildren(null, new RoutedEventArgs()));
             }
 
+            // Add user profile
             Items.Add((new Folder(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)).LoadChildren(null, new RoutedEventArgs())));
 
+            // Add root drives (C:\, etc.)
             foreach (string path in Directory.GetLogicalDrives())
                 Items.Add((new Folder(path)).LoadChildren(null, new RoutedEventArgs()));
+
             if (Items.Count == 1)
                 Items[0].IsExpanded = true;
+
             InitializeComponent();
         }
 
@@ -84,6 +90,7 @@ namespace PROSforWindows.Controls
         {
             SelectedFolder = ((Folder)e.NewValue).Path;
         }
+
     }
 
     public class Folder : INotifyPropertyChanged
@@ -138,6 +145,7 @@ namespace PROSforWindows.Controls
         public Folder(string path)
         {
             Path = path;
+            OpenInExplorerCommand = new RelayCommand(openInExplorer);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -156,6 +164,13 @@ namespace PROSforWindows.Controls
             }
             catch (UnauthorizedAccessException) { throw; }
             return this;
+        }
+
+
+        public ICommand OpenInExplorerCommand { get; set; }
+        void openInExplorer(object o)
+        {
+            System.Diagnostics.Process.Start(o as string);
         }
     }
 }

@@ -14,7 +14,10 @@
       }
     ]
   },
-    "installSources": [
-      "https://raw.githubusercontent.com/edjubuh/PROSforWindows/master/PROSforWindows/misc/update.json"
-    ]
-  }
+  "installSources": [
+    "https://raw.githubusercontent.com/edjubuh/PROSforWindows/master/PROSforWindows/misc/update.json"
+  ],
+  "recentProjects": [
+
+  ]
+}

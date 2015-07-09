@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using Newtonsoft.Json;
 
 namespace PROSforWindows.Models.Software
 {
@@ -14,6 +14,7 @@ namespace PROSforWindows.Models.Software
 
         public string Category { get; set; }
 
+        [JsonIgnore]
         public AvailableSoftware AvailableUpdate { get; set; }
     }
 }

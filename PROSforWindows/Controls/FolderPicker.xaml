@@ -23,13 +23,21 @@
             <TreeView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource ResourceKey=MetroTreeViewItem}" TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="{Binding Path=Path, Converter={StaticResource UriToNameConverter}, StringFormat=Open {0}}" 
+                                          Command="{Binding Path=OpenInExplorerCommand}" CommandParameter="{Binding Path=Path}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Subfolders}" >
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path, Converter={StaticResource UriToImageConverter}}" Height="8" Margin="0,0,2,0" />
-                        <TextBlock Text="{Binding Path, Converter={StaticResource UriToNameConverter}}" FontSize="10"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <Image Source="{Binding Path=Path, Converter={StaticResource UriToImageConverter}}" Height="8" Margin="0,0,2,0" />
+                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource UriToNameConverter}}" FontSize="10"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
