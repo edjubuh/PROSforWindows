@@ -53,13 +53,14 @@ namespace PROSforWindows.ViewModels
             UpdateSources = new ObservableCollection<UpdateSource>();
 
             HyperlinkCommand = new RelayCommand(openHyperlink);
+            DownloadSoftwareCommand = new RelayCommand(downloadSoftware);
 
             FetchAllAvailableSoftware();
         }
 
         public async void FetchAllAvailableSoftware()
         {
-            using (var client = new WebClient())
+            using (var client = new WebClient() { CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.BypassCache) })
                 foreach (string url in (IEnumerable<string>)App.Current.Properties["installSources"])
                     await FetchAvailableSoftware(url, client);
         }
@@ -74,6 +75,7 @@ namespace PROSforWindows.ViewModels
 
         public async Task FetchAvailableSoftware(string url, WebClient client)
         {
+            // Download the JSON file and deserialize it 
             var source = await Task.Factory.StartNew(() =>
                 JsonConvert.DeserializeObject<UpdateSource>(client.DownloadString(url),
                             new JsonSerializerSettings()
@@ -82,22 +84,38 @@ namespace PROSforWindows.ViewModels
                             }
                         )
                 );
-            foreach (var software in source.Software)
+            List<AvailableSoftware> remove = new List<AvailableSoftware>();
+            foreach (var available in source.Software)
             {
-                software.UpdateSource = source.Url;
-                if (InstalledSoftware.Any(s => s.Key == software.Key.ToString()))
-                    InstalledSoftware.Where(s => s.Key == software.Key.ToString()).ForEach(async (s) =>
+                available.UpdateSource = source.Url;
+                if (InstalledSoftware.Any(i => i.Key == available.Key.ToString()))
+                    InstalledSoftware.Where(i => i.Key == available.Key.ToString())
+                        .ForEach((installed) =>
                     {
-                        if (s.AvailableUpdates == null) s.AvailableUpdates = new ObservableCollection<AvailableSoftware>();
-                        s.AvailableUpdates.Add(await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<AvailableSoftware>(software.ToString())));
+                        if (installed.AvailableUpdates == null) installed.AvailableUpdates = new ObservableCollection<AvailableSoftware>();
+
+                        // Make sure the software update isn't already in its available updates
+                        if(!installed.AvailableUpdates.Contains(available, new AvailableSoftwareComparer()))
+                            installed.AvailableUpdates.Add(available);
+
+                        remove.Add(available);
                     });
             }
+
+            foreach (var available in remove)
+                source.Software.Remove(available);
         }
 
         public ICommand HyperlinkCommand { get; set; }
         void openHyperlink(object o)
         {
             System.Diagnostics.Process.Start(o as string);
+        }
+
+        public ICommand DownloadSoftwareCommand { get; set; }
+        void downloadSoftware(object o)
+        {
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

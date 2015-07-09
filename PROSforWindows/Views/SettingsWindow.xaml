@@ -7,7 +7,6 @@
                 xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
                 mc:Ignorable="d"
                 Title="settings" TitleCaps="False" TitleAlignment="Center"
-                ResizeMode="NoResize"
                 Height="400" Width="400" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
     <ma:MetroWindow.Resources>
         <ResourceDictionary>
@@ -28,34 +27,70 @@
         </ma:MetroTabItem>
         <ma:MetroTabItem Header="Updates">
             <StackPanel>
-                <StackPanel.Resources>
-                    <ResourceDictionary
-                            xmlns:u ="clr-namespace:PROSforWindows.Models.Software">
-                        <CollectionViewSource x:Key="collection" Source="{Binding InstalledSoftware}">
-                            <CollectionViewSource.GroupDescriptions>
-                                <PropertyGroupDescription PropertyName="Category" />
-                            </CollectionViewSource.GroupDescriptions>
-                        </CollectionViewSource>
-                    </ResourceDictionary>
-                </StackPanel.Resources>
-                <ItemsControl ItemsSource="{Binding Source={StaticResource collection}}">
+                <!-- Installed software items -->
+                <ItemsControl ItemsSource="{Binding InstalledSoftware}" >
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text=": version - " />
-                                <TextBlock Text="{Binding Version}" />
-                                <TextBlock Text=" (" FontStyle="Italic" />
-                                <ItemsControl ItemsSource="{Binding AvailableUpdates}" FontStyle="Italic">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Update available from: " FontStyle="Italic" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
+                            <WrapPanel Orientation="Horizontal">
+                                <TextBlock>
+                                    <!-- Basic information about currently installed (from settings.json) -->
+                                    <Run Text="{Binding Path=Name, StringFormat={}{0}: }" />
+                                    <Run Text="{Binding Path=Version, StringFormat=[{0}]}"/>
+                                </TextBlock>
+                                <!-- Displays available updates -->
+                                <WrapPanel Orientation="Horizontal" Visibility="{Binding Path=AvailableUpdates, Converter={StaticResource CollectionToVisibilityConverter}}">
+                                    <TextBlock Text=" (Update available from:" FontStyle="Italic">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Text" Value=" (Update available from: " />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=AvailableUpdates.Count, Converter={StaticResource CutoffConverter}, ConverterParameter=1}" Value="True">
+                                                        <Setter Property="Text" Value=" (Updates available from: " />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <ItemsControl ItemsSource="{Binding AvailableUpdates}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock FontStyle="Italic">
+                                                    <Run Text=" " />
+                                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.DownloadSoftwareCommand}" CommandParameter="{Binding}">
+                                                        <Run Text="{Binding UpdateName}" />
+                                                    </Hyperlink>
+                                                    <Run Text="{Binding Version, StringFormat= [{0}]}" />
+                                                    <Run>
+                                                        <Run.Style>
+                                                            <Style TargetType="{x:Type Run}">
+                                                                <Setter Property="Text" Value="," />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Value="True">
+                                                                        <DataTrigger.Binding>
+                                                                            <MultiBinding Converter="{StaticResource ItemIsLastConverter}" FallbackValue="True">
+                                                                                <Binding Path="DataContext.AvailableUpdates" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}" />
+                                                                                <Binding Path="DataContext" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                                            </MultiBinding>
+                                                                        </DataTrigger.Binding>
+                                                                        <Setter Property="Text" Value="{x:Null}" />
+                                                                        <Setter Property="Background" Value="Black" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Run.Style>
+                                                    </Run>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Text=")" VerticalAlignment="Bottom" />
+                                </WrapPanel>
+                            </WrapPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.GroupStyle>

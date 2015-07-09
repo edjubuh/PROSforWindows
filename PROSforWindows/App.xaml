@@ -19,12 +19,16 @@
 
                 <ResourceDictionary Source="pack://application:,,,/Resources/PurdueColors.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <!-- converters -->
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <c:CutoffConverter x:Key="CutoffConverter" />
             <c:UriToNameConverter x:Key="UriToNameConverter" />
             <c:UriToImageConverter x:Key="UriToImageConverter" />
             <c:StringToBooleanConverter x:Key="StringToBooleanConverter" />
             <c:ObjectNotNullConverter x:Key="ObjectNotNullConverter" />
+            <c:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter" />
+            <c:ItemIsLastConverter x:Key="ItemIsLastConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

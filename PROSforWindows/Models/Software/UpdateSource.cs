@@ -40,6 +40,8 @@ namespace PROSforWindows.Models.Software
         public void OnDeserialied(StreamingContext context)
         {
             Url = context.Context as string;
+            foreach (var available in Software)
+                available.UpdateName = Name;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

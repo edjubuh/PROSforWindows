@@ -63,7 +63,9 @@
     <Compile Include="Controls\FolderPicker.xaml.cs">
       <DependentUpon>FolderPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CollectionToVisibilityConverter.cs" />
     <Compile Include="Converters\FolderToStringConverter.cs" />
+    <Compile Include="Converters\ItemIsLastConverter.cs" />
     <Compile Include="Converters\ObjectNotNullConverter.cs" />
     <Compile Include="Converters\StringToBooleanConverter.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />
