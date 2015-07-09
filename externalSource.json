@@ -7,7 +7,21 @@
       "name": "PROS",
       "version": "2b11",
       "versionInteger": "11",
-      "download": "http://pros.url/path-to-2b11-files/update.bat"
+      "downloadUrl": "http://pros.url/path-to-2b11-files/update.bat"
+    },
+    {
+      "key": "pros",
+      "name": "PROS",
+      "version": "2b12",
+      "versionInteger": "12",
+      "downloadUrl": "http://pros.url/path-to-2b12-files/update.bat"
+    },
+    {
+      "key": "prosforeclipse",
+      "name": "PROS for Eclipse",
+      "version": "0.1.1.",
+      "versionInteger": "11",
+      "downloadUrl": "http://pros.url/path-to-eclipse-files/update.bat"
     }
   ]
 }
