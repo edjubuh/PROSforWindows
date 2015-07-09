@@ -37,67 +37,36 @@
                         <ItemsControl ItemsSource="{Binding InstalledSoftware}" >
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <WrapPanel Orientation="Horizontal">
-                                        <TextBlock>
-                                    <!-- Basic information about currently installed (from settings.json) -->
-                                    <Run Text="{Binding Path=Name, StringFormat={}{0}: }" />
-                                    <Run Text="{Binding Path=Version, StringFormat=[{0}]}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{Binding Name}" />
+                                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding Version}" />
+                                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=AvailableUpdate}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                            <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.HyperlinkCommand}"
+                                                       CommandParameter="{Binding Path=AvailableUpdate.DownloadUrl}">
+                                                Update
+                                                <Hyperlink.ToolTip>
+                                                    <TextBlock>
+                                                        <Run Text="{Binding Path=AvailableUpdate.Version, StringFormat='Update to {0}'}" />
+                                                        <Run Text="{Binding Path=AvailableUpdate.UpdateName, StringFormat='from {0}'}" />
+                                                    </TextBlock>
+                                                </Hyperlink.ToolTip>
+                                            </Hyperlink>
                                         </TextBlock>
-                                        <!-- Displays available updates -->
-                                        <WrapPanel Orientation="Horizontal" Visibility="{Binding Path=AvailableUpdates, Converter={StaticResource CollectionToVisibilityConverter}}">
-                                            <TextBlock Text=" (Update available from:" FontStyle="Italic">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="{x:Type TextBlock}">
-                                                        <Setter Property="Text" Value=" (Update available from: " />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Path=AvailableUpdates.Count, Converter={StaticResource CutoffConverter}, ConverterParameter=1}" Value="True">
-                                                                <Setter Property="Text" Value=" (Updates available from: " />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                            <ItemsControl ItemsSource="{Binding AvailableUpdates}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock FontStyle="Italic">
-                                                    <Run Text=" " />
-                                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ma:MetroWindow}}, Path=DataContext.DownloadSoftwareCommand}" CommandParameter="{Binding}">
-                                                        <Run Text="{Binding UpdateName}" />
-                                                    </Hyperlink>
-                                                    <Run Text="{Binding Version, StringFormat= [{0}]}" />
-                                                    <Run>
-                                                        <!-- lol all this code to remove comma if element is last element -->
-                                                        <Run.Style>
-                                                            <Style TargetType="{x:Type Run}">
-                                                                <Setter Property="Text" Value="," />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Value="True">
-                                                                        <DataTrigger.Binding>
-                                                                            <MultiBinding Converter="{StaticResource ItemIsLastConverter}" FallbackValue="True">
-                                                                                <Binding Path="DataContext.AvailableUpdates" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}" />
-                                                                                <Binding Path="DataContext" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                                            </MultiBinding>
-                                                                        </DataTrigger.Binding>
-                                                                        <Setter Property="Text" Value="{x:Null}" />
-                                                                        <Setter Property="Background" Value="Black" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Run.Style>
-                                                    </Run>
-                                                        </TextBlock>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                            <TextBlock Text=")" VerticalAlignment="Bottom" />
-                                        </WrapPanel>
-                                    </WrapPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -119,7 +88,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical">
                                         <DockPanel>
-                                            <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" VerticalAlignment="Center"/>
+                                            <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" FontSize="15" VerticalAlignment="Center"/>
                                             <Button Style="{DynamicResource SimpleHoverButton}" Content="{StaticResource DeleteIcon}" Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=Height}"
                                                     Foreground="Black" DockPanel.Dock="Right"/>
                                             <Button Style="{DynamicResource SimpleHoverButton}" Content="{StaticResource RefreshIcon}" Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=Height}"

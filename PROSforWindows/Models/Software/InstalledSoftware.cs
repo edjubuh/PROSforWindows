@@ -14,6 +14,6 @@ namespace PROSforWindows.Models.Software
 
         public string Category { get; set; }
 
-        public ObservableCollection<AvailableSoftware> AvailableUpdates { get; set; }
+        public AvailableSoftware AvailableUpdate { get; set; }
     }
 }

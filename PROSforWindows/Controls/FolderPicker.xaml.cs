@@ -1,4 +1,5 @@
 ﻿using PROSforWindows.Commands;
+using Shell32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -56,6 +57,17 @@ namespace PROSforWindows.Controls
         public FolderPicker()
         {
             DataContext = this;
+            foreach (string path in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Links").Where(p => p.EndsWith(".lnk")))
+            {
+                Shell32.ShellLinkObject link = (Shell32.ShellLinkObject)((new Shell()).
+                    NameSpace(System.IO.Path.GetDirectoryName(path)).
+                    ParseName(System.IO.Path.GetFileName(path)).
+                    GetLink);
+                if(!string.IsNullOrEmpty(link.Path)) Items.Add((new Folder(link.Path)).LoadChildren(null, new RoutedEventArgs()));
+            }
+
+            Items.Add((new Folder(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)).LoadChildren(null, new RoutedEventArgs())));
+
             foreach (string path in Directory.GetLogicalDrives())
                 Items.Add((new Folder(path)).LoadChildren(null, new RoutedEventArgs()));
             if (Items.Count == 1)

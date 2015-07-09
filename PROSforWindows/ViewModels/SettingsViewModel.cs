@@ -94,11 +94,11 @@ namespace PROSforWindows.ViewModels
                     InstalledSoftware.Where(i => i.Key == available.Key.ToString())
                         .ForEach((installed) =>
                     {
-                        if (installed.AvailableUpdates == null) installed.AvailableUpdates = new ObservableCollection<AvailableSoftware>();
-
-                        // Make sure the software update isn't already in its available updates
-                        if (!installed.AvailableUpdates.Contains(available, new AvailableSoftwareComparer()))
-                            installed.AvailableUpdates.Add(available);
+                        if (installed.AvailableUpdate == null ||
+                            installed.AvailableUpdate.VersionInteger < available.VersionInteger)
+                        {
+                            installed.AvailableUpdate = available;
+                        }
 
                         remove.Add(available);
                     });
@@ -119,7 +119,7 @@ namespace PROSforWindows.ViewModels
         public ICommand DownloadSoftwareCommand { get; set; }
         void downloadSoftware(object o)
         {
-            
+
         }
 
         public ICommand CopyToClipboardCommand { get; set; }
