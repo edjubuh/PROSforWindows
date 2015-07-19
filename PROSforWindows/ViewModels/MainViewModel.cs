@@ -33,6 +33,20 @@ namespace PROSforWindows.ViewModels
         }
 
         #region New project members
+        bool _creatingProject;
+        public bool CreatingProject
+        {
+            get { return _creatingProject; }
+            set
+            {
+                if (_creatingProject != value)
+                {
+                    _creatingProject = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CreatingProject)));
+                }
+            }
+        }
+
         ICommand _newProjectCommand;
         public ICommand NewProjectCommand
         {
@@ -48,7 +62,7 @@ namespace PROSforWindows.ViewModels
         }
         void newProject(object o)
         {
-            DialogService.GetCurrentWindow().ShowMessageAsync("Hello world!", "I'm working!");
+            CreatingProject = true;
         }
 
         #endregion
